@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 3 — AGENT Framework | AI Course</title>
+<style>
+:root{--bg:#0f1117;--s1:#1a1d2e;--s2:#222638;--bd:#2e3150;--ac:#6c63ff;--g:#00d4aa;--r:#ff6b6b;--y:#f7c948;--tx:#e8eaf6;--mu:#8b90b8;--wh:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+a{color:var(--ac)}
+.topbar{background:var(--s1);border-bottom:1px solid var(--bd);padding:14px 28px;display:flex;align-items:center;gap:16px}
+.back{color:var(--mu);font-size:13px;cursor:pointer;text-decoration:none}
+.back:hover{color:var(--tx)}
+.topbar-title{font-size:16px;font-weight:700;color:var(--wh)}
+.mod-badge{background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.3);color:#9d96ff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:auto}
+.container{max-width:860px;margin:0 auto;padding:32px 24px 60px}
+h2{font-size:26px;font-weight:800;color:var(--wh);margin-bottom:8px}
+.hero-desc{color:var(--mu);font-size:15px;margin-bottom:28px}
+
+/* CONCEPTS */
+.concept-box{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:14px}
+.cb-title{font-size:16px;font-weight:700;color:var(--wh);margin-bottom:8px}
+.cb-desc{font-size:13px;color:var(--mu);line-height:1.7}
+.resource-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.res-link{display:inline-flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--bd);color:var(--tx);font-size:12px;font-weight:600;padding:5px 12px;border-radius:8px;text-decoration:none;transition:border-color .2s}
+.res-link:hover{border-color:var(--ac);color:var(--ac)}
+
+/* LESSON CHECKS */
+.lesson-check-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.lesson-check-row:last-child{border-bottom:none}
+.lc{width:22px;height:22px;border-radius:50%;border:2px solid var(--bd);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .2s}
+.lc.done{background:var(--g);border-color:var(--g);color:var(--bg)}
+.lc-text{font-size:14px;color:var(--tx)}
+.lc-sub{font-size:12px;color:var(--mu);margin-top:2px}
+
+/* AGENT FRAMEWORK WORKSHEET */
+.fw-header{margin:40px 0 20px}
+.fw-title{font-size:22px;font-weight:800;color:var(--wh);margin-bottom:4px}
+.fw-sub{font-size:14px;color:var(--mu)}
+.workflow-selector{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:20px;margin-bottom:24px}
+.ws-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--mu);margin-bottom:8px}
+.ws-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input[type=text]{background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:inherit;font-size:14px;padding:9px 14px;outline:none;width:100%;transition:border-color .2s}
+input[type=text]:focus{border-color:var(--ac)}
+input[type=text]::placeholder{color:var(--mu)}
+.ws-or{color:var(--mu);font-size:13px;white-space:nowrap}
+.quick-pick{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.qp-btn{background:var(--s2);border:1px solid var(--bd);color:var(--mu);font-size:12px;padding:5px 12px;border-radius:20px;cursor:pointer;transition:all .2s}
+.qp-btn:hover,.qp-btn.active{background:rgba(108,99,255,.15);border-color:var(--ac);color:var(--ac)}
+
+/* STEPS */
+.step-card{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:22px;margin-bottom:16px;position:relative;overflow:hidden}
+.step-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px}
+.s-a::before{background:var(--y)} .s-g::before{background:var(--g)} .s-e::before{background:var(--ac)} .s-n::before{background:var(--r)} .s-t::before{background:#b4aaff}
+.step-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.step-letter{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0}
+.sl-a{background:rgba(247,201,72,.15);color:var(--y)} .sl-g{background:rgba(0,212,170,.15);color:var(--g)} .sl-e{background:rgba(108,99,255,.15);color:var(--ac)} .sl-n{background:rgba(255,107,107,.15);color:var(--r)} .sl-t{background:rgba(180,170,255,.2);color:#b4aaff}
+.step-header-text{}
+.step-name{font-size:17px;font-weight:700;color:var(--wh)}
+.step-tagline{font-size:12px;color:var(--mu);margin-top:2px}
+.step-desc{font-size:13px;color:var(--mu);line-height:1.7;margin-bottom:14px}
+.field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mu);margin-bottom:6px;margin-top:12px}
+textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:inherit;font-size:13px;padding:10px 12px;resize:vertical;outline:none;transition:border-color .2s}
+textarea:focus{border-color:var(--ac)}
+textarea::placeholder{color:var(--mu)}
+
+/* SAVE BAR */
+.save-bar{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--bd);padding:14px 24px;display:flex;align-items:center;gap:12px;margin:0 -24px}
+.save-btn{background:var(--ac);color:white;border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s}
+.save-btn:hover{opacity:.85}
+.saved-note{font-size:12px;color:var(--g);opacity:0;transition:opacity .3s}
+.export-btn{background:transparent;border:1px solid var(--bd);color:var(--mu);padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.export-btn:hover{border-color:var(--g);color:var(--g)}
+
+/* COMPLETE */
+.complete-box{background:linear-gradient(135deg,rgba(0,212,170,.06),rgba(108,99,255,.06));border:1px solid rgba(0,212,170,.3);border-radius:14px;padding:24px;text-align:center;margin-top:28px;display:none}
+.cb-emoji{font-size:40px;margin-bottom:12px}
+.cb-h{font-size:18px;font-weight:800;color:var(--wh);margin-bottom:6px}
+.cb-p{font-size:14px;color:var(--mu);margin-bottom:16px}
+.cb-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.cb-link{padding:8px 20px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer}
+.cb-link.primary{background:var(--ac);color:white}
+.cb-link.sec{border:1px solid var(--bd);color:var(--mu)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="topbar-title">Module 3 — Agentic AI + AGENT Framework</div>
+  <div class="mod-badge">Week 3 · ~4 hrs</div>
+</div>
+
+<div class="container">
+  <h2>Agentic AI &amp; the AGENT Framework</h2>
+  <p class="hero-desc">Learn what AI agents are, then use the Harvard/DAIN Studios A.G.E.N.T. Framework to design your first implementation-ready agentic workflow.</p>
+
+  <!-- LESSON CONCEPTS -->
+  <div class="concept-box">
+    <div class="cb-title">Lesson 3.1 — What Are AI Agents?</div>
+    <div class="cb-desc">Agents are AI systems that perceive their environment, make decisions, and take multi-step actions without a human prompt at each step. For product and engineering, this means: an agent that reads your backlog, researches user feedback, drafts a spec, and routes it for review — all automatically. Key concepts: tool use, memory, planning, multi-agent collaboration, and the ReAct loop (Reason → Act → Observe → Repeat).</div>
+    <div class="resource-row">
+      <a class="res-link" href="https://learn.deeplearning.ai/courses/agentic-ai/information" target="_blank">🎓 DeepLearning.AI "Agentic AI" — Andrew Ng (free)</a>
+      <a class="res-link" href="https://www.anthropic.com/research/building-effective-agents" target="_blank">📖 Anthropic: Building Effective Agents</a>
+      <a class="res-link" href="https://developers.openai.com/api/docs/guides/agents" target="_blank">📖 OpenAI: Practical Guide to Building Agents</a>
+    </div>
+    <div style="margin-top:10px">
+      <div class="lesson-check-row"><div class="lc" id="lc1" onclick="toggleLC(1)">✓</div><div><div class="lc-text">Watched/read the "What are AI agents?" resources</div><div class="lc-sub">~45 min</div></div></div>
+      <div class="lesson-check-row"><div class="lc" id="lc2" onclick="toggleLC(2)">✓</div><div><div class="lc-text">Understand: tool use, memory, planning, and multi-agent systems</div><div class="lc-sub">Core concepts</div></div></div>
+      <div class="lesson-check-row"><div class="lc" id="lc3" onclick="toggleLC(3)">✓</div><div><div class="lc-text">Read Google Cloud's Agentic Design Patterns guide</div><div class="lc-sub"><a href="https://docs.cloud.google.com/architecture/choose-design-pattern-agentic-ai-system" target="_blank">link here</a> · 20 min</div></div></div>
+    </div>
+  </div>
+
+  <div class="concept-box">
+    <div class="cb-title">Lesson 3.2 — Agentic RAG (AI + Your Data)</div>
+    <div class="cb-desc">Retrieval-Augmented Generation 2.0: instead of just searching once and summarizing, Agentic RAG actively searches, evaluates whether it found enough, and searches again if needed. For product work: imagine an agent that reads your Jira tickets, user research docs, and analytics data to automatically surface the right context for a decision.</div>
+    <div class="resource-row">
+      <a class="res-link" href="https://learn.deeplearning.ai/courses/building-agentic-rag-with-llamaindex" target="_blank">🎓 DeepLearning.AI — Agentic RAG with LlamaIndex</a>
+      <a class="res-link" href="https://notebooklm.google.com" target="_blank">🛠 Google NotebookLM (no-code RAG, free)</a>
+    </div>
+    <div style="margin-top:10px">
+      <div class="lesson-check-row"><div class="lc" id="lc4" onclick="toggleLC(4)">✓</div><div><div class="lc-text">Understand what Agentic RAG is and why it's useful</div></div></div>
+      <div class="lesson-check-row"><div class="lc" id="lc5" onclick="toggleLC(5)">✓</div><div><div class="lc-text">Set up a NotebookLM notebook with 3+ product/engineering docs</div><div class="lc-sub">Try: past PRDs, user research, architecture docs</div></div></div>
+    </div>
+  </div>
+
+  <!-- FRAMEWORK WORKSHEET -->
+  <div class="fw-header">
+    <div class="fw-title">🤖 A.G.E.N.T. Framework Worksheet</div>
+    <div class="fw-sub">This is your core Module 3 deliverable — an implementation-ready brief for an agentic workflow. The same output the Harvard HDSR course produces at the end of 2.5 weeks.</div>
+  </div>
+
+  <!-- Workflow selection -->
+  <div class="workflow-selector">
+    <div class="ws-label">Step 0 — Choose a workflow to design</div>
+    <input type="text" id="workflow-name" placeholder="Name your workflow (e.g. 'Weekly competitive research report')" oninput="save('m3_workflow_name',this.value)">
+    <div class="ws-or" style="margin-top:10px;margin-bottom:6px">Quick-pick a common Product/Engineering workflow:</div>
+    <div class="quick-pick">
+      <button class="qp-btn" onclick="pickWorkflow('Weekly competitive analysis report')">Competitive Analysis</button>
+      <button class="qp-btn" onclick="pickWorkflow('PRD drafting from user research')">PRD from User Research</button>
+      <button class="qp-btn" onclick="pickWorkflow('Sprint retrospective synthesis')">Sprint Retro Synthesis</button>
+      <button class="qp-btn" onclick="pickWorkflow('Release notes generation')">Release Notes</button>
+      <button class="qp-btn" onclick="pickWorkflow('User feedback triage and prioritization')">Feedback Triage</button>
+      <button class="qp-btn" onclick="pickWorkflow('Architecture decision research and summary')">ADR Research</button>
+    </div>
+  </div>
+
+  <!-- STEP A -->
+  <div class="step-card s-a">
+    <div class="step-top">
+      <div class="step-letter sl-a">A</div>
+      <div class="step-header-text">
+        <div class="step-name">Assess &amp; Audit the Workflow</div>
+        <div class="step-tagline">Map it. Score it. Decide if it's agent-ready.</div>
+      </div>
+    </div>
+    <div class="step-desc">Map the workflow in detail: what triggers it, what data it touches, who does each step, and how long each step takes. An agent-ready workflow is high-volume, rule-based at key steps, language-heavy, and doesn't require nuanced human judgment at every decision point.</div>
+    <div class="field-label">Current workflow steps (write them out, step by step)</div>
+    <textarea id="a-steps" rows="4" placeholder="e.g. 1. I search 3–4 websites for competitor news (20 min)&#10;2. I read and take notes (30 min)&#10;3. I write a Slack summary (15 min)&#10;4. I post in #product channel"></textarea>
+    <div class="field-label">Inputs (what data / triggers does this workflow use?)</div>
+    <textarea id="a-inputs" rows="2" placeholder="e.g. Competitor websites, Google Alerts, Jira tickets, customer interviews, analytics dashboard..."></textarea>
+    <div class="field-label">Current time cost &amp; frequency</div>
+    <textarea id="a-time" rows="2" placeholder="e.g. 65 minutes per week. Done every Monday morning before standup."></textarea>
+    <div class="field-label">Agent-readiness score: which steps are most repetitive / rule-based?</div>
+    <textarea id="a-readiness" rows="2" placeholder="e.g. Steps 1–2 (searching + reading) are highly automatable. Step 3 (writing summary) is partly automatable. Step 4 is just a button click."></textarea>
+  </div>
+
+  <!-- STEP G -->
+  <div class="step-card s-g">
+    <div class="step-top">
+      <div class="step-letter sl-g">G</div>
+      <div class="step-header-text">
+        <div class="step-name">Goal &amp; Outcome Definition</div>
+        <div class="step-tagline">What does success look like, exactly?</div>
+      </div>
+    </div>
+    <div class="step-desc">Vague goals produce vague agents. Define the outcome you want with enough precision that you could evaluate whether the agent achieved it. Also define where humans stay in the loop — the Harvard course stresses this: agents take actions, humans make final decisions on high-stakes steps.</div>
+    <div class="field-label">Primary goal (what should the agent produce or achieve?)</div>
+    <textarea id="g-goal" rows="2" placeholder="e.g. Produce a structured 300-word Slack summary of top 5 competitor developments each week, with source links, by 9am Monday."></textarea>
+    <div class="field-label">Success criteria (how will you know it worked?)</div>
+    <textarea id="g-success" rows="2" placeholder="e.g. Summary requires &lt;5 min of editing before posting. Information is accurate with working links. Saves at least 50 min vs. manual process."></textarea>
+    <div class="field-label">Human-in-the-loop checkpoints (what must a human review before action?)</div>
+    <textarea id="g-hitl" rows="2" placeholder="e.g. Human reviews and approves before posting to Slack. Human decides on any strategic interpretation or recommendation."></textarea>
+    <div class="field-label">What is out of scope / what should the agent NOT do?</div>
+    <textarea id="g-nogo" rows="2" placeholder="e.g. Should not post anything without approval. Should not access internal systems without permission. Should not make strategic recommendations unprompted."></textarea>
+  </div>
+
+  <!-- STEP E -->
+  <div class="step-card s-e">
+    <div class="step-top">
+      <div class="step-letter sl-e">E</div>
+      <div class="step-header-text">
+        <div class="step-name">Experiment with a Pilot</div>
+        <div class="step-tagline">Run a real test. Gather evidence. Don't over-engineer.</div>
+      </div>
+    </div>
+    <div class="step-desc">The Harvard course emphasizes: pilot first, scale second. Design the smallest possible experiment that tests whether an agent can handle the core steps. For most product/engineering workflows, this means starting with Claude Projects or a simple n8n automation, not custom code.</div>
+    <div class="field-label">Pilot design — what is the simplest version of this agent you could test this week?</div>
+    <textarea id="e-pilot" rows="3" placeholder="e.g. Use Claude with web search enabled. Prompt it to search for [competitor] news from the past 7 days and structure the output in a specific format. Run it 3 times and compare to manual output."></textarea>
+    <div class="field-label">Tools to use for the pilot (no-code/low-code preferred)</div>
+    <textarea id="e-tools" rows="2" placeholder="e.g. Claude.ai with web search + Projects. Or: Perplexity Pro with a saved prompt template. Or: n8n with a web search node + Claude API."></textarea>
+    <div class="field-label">How will you evaluate the pilot output? What metrics?</div>
+    <textarea id="e-eval" rows="2" placeholder="e.g. Time taken (target: &lt;10 min vs 65 min manual). Accuracy check against manual research. Edit distance needed before it's usable."></textarea>
+    <div class="field-label">Pilot results (fill in after running it)</div>
+    <textarea id="e-results" rows="3" placeholder="Run the pilot first, then come back here and record: what worked, what didn't, and what you'd change in the next iteration."></textarea>
+  </div>
+
+  <!-- STEP N -->
+  <div class="step-card s-n">
+    <div class="step-top">
+      <div class="step-letter sl-n">N</div>
+      <div class="step-header-text">
+        <div class="step-name">Navigate Governance &amp; Risk</div>
+        <div class="step-tagline">Gartner: 40% of agentic AI projects fail due to poor governance — not bad technology.</div>
+      </div>
+    </div>
+    <div class="step-desc">Before scaling, identify the risks. For product and engineering workflows, common risks include: data privacy (don't send customer PII to public AI APIs), accuracy requirements (is a 10% error rate acceptable?), and access control (which systems can the agent read/write?).</div>
+    <div class="field-label">Data &amp; privacy concerns</div>
+    <textarea id="n-privacy" rows="2" placeholder="e.g. Competitive research is all public data — low risk. User interviews contain PII — must use enterprise Claude or anonymize before sending."></textarea>
+    <div class="field-label">Accuracy requirements (what's the acceptable error rate?)</div>
+    <textarea id="n-accuracy" rows="2" placeholder="e.g. Competitive summary: 90% accuracy acceptable since a human reviews. PRD drafts: requires careful human review of every claim."></textarea>
+    <div class="field-label">Access controls (what can the agent read/write/trigger?)</div>
+    <textarea id="n-access" rows="2" placeholder="e.g. Read: web search, company Google Drive (approved docs only). Write: create draft in Notion (not publish). Cannot: access customer database, send emails autonomously."></textarea>
+    <div class="field-label">Compliance / policy constraints</div>
+    <textarea id="n-compliance" rows="2" placeholder="e.g. Confirm AI tool usage is approved by IT/legal. Check if outputs need disclosure as AI-generated. Review company AI policy."></textarea>
+  </div>
+
+  <!-- STEP T -->
+  <div class="step-card s-t">
+    <div class="step-top">
+      <div class="step-letter sl-t">T</div>
+      <div class="step-header-text">
+        <div class="step-name">Transform &amp; Scale</div>
+        <div class="step-tagline">3+ use cases in production = 160% ROI. Plan your portfolio.</div>
+      </div>
+    </div>
+    <div class="step-desc">Once the pilot proves value, design the scaled version and identify your next 2 use cases to run in parallel. Research shows 3+ concurrent AI use cases achieve 4× the ROI of a single use case.</div>
+    <div class="field-label">Scaled version — what would production look like? (tools, triggers, integrations)</div>
+    <textarea id="t-scale" rows="3" placeholder="e.g. n8n workflow: triggered every Monday 7am → searches 5 competitor sites → Claude API summarizes → posts draft to #product-alerts Slack channel → waits for PM approval before publishing."></textarea>
+    <div class="field-label">Next 2 use cases for your AI portfolio (to reach 3+ total)</div>
+    <textarea id="t-next" rows="2" placeholder="e.g. Use case 2: Sprint retro synthesis (automate reading Jira tickets + team notes → draft retro doc). Use case 3: Release notes generation (from git commits + tickets)."></textarea>
+    <div class="field-label">90-day milestones</div>
+    <textarea id="t-milestones" rows="3" placeholder="Day 1–7: Run pilot manually. Day 8–21: Build and test automated version. Day 22–30: Get feedback from team. Day 31–60: Launch use case 2. Day 61–90: Launch use case 3. Measure ROI across all 3."></textarea>
+    <div class="field-label">Expected time savings per week (once scaled)</div>
+    <textarea id="t-roi" rows="2" placeholder="e.g. This workflow alone: 50 min/week saved. All 3 use cases: ~3 hrs/week across team."></textarea>
+  </div>
+
+  <div class="save-bar">
+    <button class="save-btn" onclick="saveAll()">Save Framework</button>
+    <button class="export-btn" onclick="exportBrief()">Export as Text Brief</button>
+    <span class="saved-note" id="save-note">Saved ✓</span>
+  </div>
+
+  <div class="complete-box" id="complete-box">
+    <div class="cb-emoji">🎉</div>
+    <div class="cb-h">Your implementation brief is ready!</div>
+    <div class="cb-p">You've completed the same core deliverable as the Harvard HDSR Agentic AI Intensive. Take this brief to Module 4 and start building.</div>
+    <div class="cb-links">
+      <a class="cb-link primary" href="module-4-building.html">→ Module 4: Build It</a>
+      <a class="cb-link sec" href="roi-tracker.html">Log expected ROI</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function save(k,v){try{localStorage.setItem('aicourse_'+k,JSON.stringify(v))}catch(e){}}
+function load(k,d){try{var v=localStorage.getItem('aicourse_'+k);return v!==null?JSON.parse(v):d}catch(e){return d}}
+
+var fields=['a-steps','a-inputs','a-time','a-readiness','g-goal','g-success','g-hitl','g-nogo','e-pilot','e-tools','e-eval','e-results','n-privacy','n-accuracy','n-access','n-compliance','t-scale','t-next','t-milestones','t-roi'];
+
+window.addEventListener('load',function(){
+  // Restore fields
+  fields.forEach(function(f){
+    var saved=load('m3_'+f,'');
+    if(saved)document.getElementById(f).value=saved;
+  });
+  var wf=load('m3_workflow_name','');
+  if(wf)document.getElementById('workflow-name').value=wf;
+  // Restore checkboxes
+  var checks=load('m3_lc',{});
+  Object.keys(checks).forEach(function(k){if(checks[k])document.getElementById('lc'+k).classList.add('done')});
+  updateProgress();
+});
+
+function toggleLC(n){
+  var checks=load('m3_lc',{});
+  checks[n]=!checks[n];
+  save('m3_lc',checks);
+  document.getElementById('lc'+n).classList.toggle('done',checks[n]);
+  updateProgress();
+}
+
+function updateProgress(){
+  var checks=load('m3_lc',{});
+  var done=Object.values(checks).filter(Boolean).length;
+  // count filled fields
+  var filled=fields.filter(function(f){return document.getElementById(f)&&document.getElementById(f).value.trim().length>20}).length;
+  var total=4; // 4 lessons
+  var lessonsDone=Math.min(done>=5?2:done>=3?1:0,2)+(filled>=10?2:filled>=5?1:0);
+  save('m3_done',Math.min(lessonsDone,4));
+}
+
+function saveAll(){
+  fields.forEach(function(f){
+    save('m3_'+f,document.getElementById(f).value);
+  });
+  save('m3_workflow_name',document.getElementById('workflow-name').value);
+  var n=document.getElementById('save-note');
+  n.style.opacity=1;setTimeout(function(){n.style.opacity=0},2500);
+  // Show complete box if enough filled
+  var filled=fields.filter(function(f){return document.getElementById(f).value.trim().length>20}).length;
+  if(filled>=12)document.getElementById('complete-box').style.display='block';
+  save('m3_done',Math.min(Math.floor(filled/3),4));
+}
+
+function pickWorkflow(name){
+  document.getElementById('workflow-name').value=name;
+  save('m3_workflow_name',name);
+  document.querySelectorAll('.qp-btn').forEach(function(b){b.classList.remove('active')});
+  event.target.classList.add('active');
+}
+
+function exportBrief(){
+  var wf=document.getElementById('workflow-name').value||'My Workflow';
+  var lines=['A.G.E.N.T. FRAMEWORK BRIEF','Workflow: '+wf,'Generated: '+new Date().toLocaleDateString(),'','━━━━ A: ASSESS ━━━━','Steps: '+document.getElementById('a-steps').value,'Inputs: '+document.getElementById('a-inputs').value,'Time/Frequency: '+document.getElementById('a-time').value,'Readiness: '+document.getElementById('a-readiness').value,'','━━━━ G: GOAL ━━━━','Goal: '+document.getElementById('g-goal').value,'Success: '+document.getElementById('g-success').value,'Human checkpoints: '+document.getElementById('g-hitl').value,'Out of scope: '+document.getElementById('g-nogo').value,'','━━━━ E: EXPERIMENT ━━━━','Pilot design: '+document.getElementById('e-pilot').value,'Tools: '+document.getElementById('e-tools').value,'Evaluation: '+document.getElementById('e-eval').value,'Results: '+document.getElementById('e-results').value,'','━━━━ N: NAVIGATE ━━━━','Privacy: '+document.getElementById('n-privacy').value,'Accuracy: '+document.getElementById('n-accuracy').value,'Access controls: '+document.getElementById('n-access').value,'Compliance: '+document.getElementById('n-compliance').value,'','━━━━ T: TRANSFORM ━━━━','Scaled version: '+document.getElementById('t-scale').value,'Next use cases: '+document.getElementById('t-next').value,'90-day milestones: '+document.getElementById('t-milestones').value,'Expected savings: '+document.getElementById('t-roi').value];
+  var blob=new Blob([lines.join('\n')],{type:'text/plain'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='AGENT_Brief_'+wf.replace(/\s+/g,'_')+'.txt';
+  a.click();
+}
+</script>
+</body>
+</html>

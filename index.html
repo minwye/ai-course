@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My AI Course — Dashboard</title>
+<style>
+:root{--bg:#0f1117;--s1:#1a1d2e;--s2:#222638;--bd:#2e3150;--ac:#6c63ff;--g:#00d4aa;--r:#ff6b6b;--y:#f7c948;--tx:#e8eaf6;--mu:#8b90b8;--wh:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* HEADER */
+.header{background:var(--s1);border-bottom:1px solid var(--bd);padding:24px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{font-size:20px;font-weight:800;color:var(--wh)}
+.logo span{color:var(--ac)}
+.header-right{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--mu)}
+.week-badge{background:rgba(108,99,255,0.15);border:1px solid rgba(108,99,255,0.3);color:#9d96ff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
+
+/* HERO */
+.hero{padding:40px 32px 32px;max-width:1000px;margin:0 auto}
+.hero h1{font-size:clamp(22px,4vw,36px);font-weight:800;color:var(--wh);margin-bottom:8px}
+.hero p{color:var(--mu);font-size:15px;margin-bottom:24px}
+.overall-progress{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:20px 24px}
+.op-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--mu);margin-bottom:8px}
+.op-row{display:flex;align-items:center;gap:14px}
+.op-bar{flex:1;height:8px;background:var(--bd);border-radius:99px;overflow:hidden}
+.op-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--g));border-radius:99px;transition:width 0.5s}
+.op-pct{font-size:20px;font-weight:800;color:var(--g)}
+.op-lessons{font-size:13px;color:var(--mu);margin-top:6px}
+
+/* GRID */
+.container{max-width:1000px;margin:0 auto;padding:0 32px 48px}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--g);margin:32px 0 16px}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+
+/* MODULE CARD */
+.mod-card{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:border-color 0.2s,transform 0.15s;position:relative;overflow:hidden}
+.mod-card:hover{border-color:var(--ac);transform:translateY(-2px)}
+.mod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.c1::before{background:var(--y)} .c2::before{background:var(--g)} .c3::before{background:var(--ac)} .c4::before{background:var(--r)} .c5::before{background:#b4aaff}
+.mod-top{display:flex;align-items:center;gap:12px}
+.mod-num{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0}
+.n1{background:rgba(247,201,72,.15);color:var(--y)} .n2{background:rgba(0,212,170,.15);color:var(--g)} .n3{background:rgba(108,99,255,.15);color:var(--ac)} .n4{background:rgba(255,107,107,.15);color:var(--r)} .n5{background:rgba(180,170,255,.2);color:#b4aaff}
+.mod-name{font-size:16px;font-weight:700;color:var(--wh)}
+.mod-week{font-size:11px;color:var(--mu);margin-top:2px}
+.mod-desc{font-size:13px;color:var(--mu);line-height:1.6}
+.mod-progress{display:flex;flex-direction:column;gap:6px}
+.mp-bar{height:5px;background:var(--bd);border-radius:99px;overflow:hidden}
+.mp-fill{height:100%;border-radius:99px;background:var(--g);transition:width 0.4s}
+.mp-label{display:flex;justify-content:space-between;font-size:11px;color:var(--mu)}
+.mod-cta{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--ac);margin-top:4px}
+.mod-done{font-size:11px;font-weight:700;color:var(--g);background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.3);padding:3px 10px;border-radius:20px;align-self:flex-start}
+
+/* TOOLS GRID */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.tool-card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:16px;cursor:pointer;transition:border-color 0.2s;display:flex;flex-direction:column;gap:8px}
+.tool-card:hover{border-color:var(--g)}
+.tool-icon{font-size:24px}
+.tool-name{font-size:14px;font-weight:700;color:var(--wh)}
+.tool-desc{font-size:12px;color:var(--mu)}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:32px}
+.stat-box{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center}
+.sb-num{font-size:28px;font-weight:800;color:var(--g)}
+.sb-label{font-size:12px;color:var(--mu);margin-top:4px}
+
+/* WEEK PLAN */
+.week-plan{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:20px}
+.wp-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bd)}
+.wp-row:last-child{border-bottom:none}
+.wp-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--bd);flex-shrink:0;margin-top:2px;cursor:pointer;transition:all 0.2s}
+.wp-check.done{background:var(--g);border-color:var(--g)}
+.wp-text{flex:1}
+.wp-title{font-size:14px;font-weight:600;color:var(--wh)}
+.wp-sub{font-size:12px;color:var(--mu);margin-top:2px}
+.wp-time{font-size:11px;color:var(--y);font-weight:600;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">Min's <span>AI Course</span></div>
+  <div class="header-right">
+    <span id="today-date"></span>
+    <span class="week-badge" id="current-week-badge">Week 1</span>
+  </div>
+</div>
+
+<div class="hero">
+  <h1>Your AI Learning Dashboard</h1>
+  <p>Technical/Product track · 3–5 hrs/week · 6 weeks · Focus on high-ROI use cases</p>
+  <div class="overall-progress">
+    <div class="op-label">Overall Course Progress</div>
+    <div class="op-row">
+      <div class="op-bar"><div class="op-fill" id="overall-bar" style="width:0%"></div></div>
+      <div class="op-pct" id="overall-pct">0%</div>
+    </div>
+    <div class="op-lessons" id="overall-lessons">0 of 20 lessons complete</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- STATS -->
+  <div class="section-label">Your Numbers</div>
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="sb-num" id="stat-hrs">0h</div>
+      <div class="sb-label">Hours Saved (Total)</div>
+    </div>
+    <div class="stat-box">
+      <div class="sb-num" id="stat-lessons">0</div>
+      <div class="sb-label">Lessons Complete</div>
+    </div>
+    <div class="stat-box">
+      <div class="sb-num" id="stat-prompts">0</div>
+      <div class="sb-label">Prompts Saved</div>
+    </div>
+    <div class="stat-box">
+      <div class="sb-num" id="stat-week">Wk 1</div>
+      <div class="sb-label">Current Week</div>
+    </div>
+  </div>
+
+  <!-- MODULES -->
+  <div class="section-label">Course Modules</div>
+  <div class="modules-grid">
+
+    <div class="mod-card c1" onclick="location.href='module-1-foundations.html'">
+      <div class="mod-top">
+        <div class="mod-num n1">1</div>
+        <div><div class="mod-name">Foundations &amp; Mindset</div><div class="mod-week">Week 1 · ~4 hrs</div></div>
+      </div>
+      <div class="mod-desc">How LLMs work, prompt engineering, and the Workflow Audit Tool to score your highest-value AI opportunities.</div>
+      <div class="mod-progress">
+        <div class="mp-bar"><div class="mp-fill" id="m1-bar" style="width:0%"></div></div>
+        <div class="mp-label"><span id="m1-label">0 / 4 lessons</span><span id="m1-pct">0%</span></div>
+      </div>
+      <div class="mod-cta">Open Module 1 →</div>
+    </div>
+
+    <div class="mod-card c2" onclick="location.href='module-2-quick-wins.html'">
+      <div class="mod-top">
+        <div class="mod-num n2">2</div>
+        <div><div class="mod-name">Quick Wins</div><div class="mod-week">Week 2 · ~5 hrs</div></div>
+      </div>
+      <div class="mod-desc">Document analysis, research synthesis, writing templates — the fastest-payback use cases for product &amp; engineering.</div>
+      <div class="mod-progress">
+        <div class="mp-bar"><div class="mp-fill" id="m2-bar" style="width:0%"></div></div>
+        <div class="mp-label"><span id="m2-label">0 / 4 lessons</span><span id="m2-pct">0%</span></div>
+      </div>
+      <div class="mod-cta">Open Module 2 →</div>
+    </div>
+
+    <div class="mod-card c3" onclick="location.href='module-3-agent-framework.html'">
+      <div class="mod-top">
+        <div class="mod-num n3">3</div>
+        <div><div class="mod-name">Agentic AI + AGENT Framework</div><div class="mod-week">Week 3 · ~4 hrs</div></div>
+      </div>
+      <div class="mod-desc">Design your first agent-ready workflow using the Harvard/DAIN Studios A.G.E.N.T. Framework. Produces an implementation-ready brief.</div>
+      <div class="mod-progress">
+        <div class="mp-bar"><div class="mp-fill" id="m3-bar" style="width:0%"></div></div>
+        <div class="mp-label"><span id="m3-label">0 / 4 lessons</span><span id="m3-pct">0%</span></div>
+      </div>
+      <div class="mod-cta">Open Module 3 →</div>
+    </div>
+
+    <div class="mod-card c4" onclick="location.href='module-4-building.html'">
+      <div class="mod-top">
+        <div class="mod-num n4">4</div>
+        <div><div class="mod-name">Building Agents</div><div class="mod-week">Weeks 4–5 · ~6 hrs</div></div>
+      </div>
+      <div class="mod-desc">Claude Projects, n8n workflows, API basics. Build real agentic automations tailored to product &amp; engineering workflows.</div>
+      <div class="mod-progress">
+        <div class="mp-bar"><div class="mp-fill" id="m4-bar" style="width:0%"></div></div>
+        <div class="mp-label"><span id="m4-label">0 / 4 lessons</span><span id="m4-pct">0%</span></div>
+      </div>
+      <div class="mod-cta">Open Module 4 →</div>
+    </div>
+
+    <div class="mod-card c5" onclick="location.href='module-5-strategy.html'">
+      <div class="mod-top">
+        <div class="mod-num n5">5</div>
+        <div><div class="mod-name">Measure ROI &amp; Scale</div><div class="mod-week">Week 6 · ~4 hrs</div></div>
+      </div>
+      <div class="mod-desc">Quantify time saved, build a business case, and design your 3-use-case portfolio for compounding returns.</div>
+      <div class="mod-progress">
+        <div class="mp-bar"><div class="mp-fill" id="m5-bar" style="width:0%"></div></div>
+        <div class="mp-label"><span id="m5-label">0 / 4 lessons</span><span id="m5-pct">0%</span></div>
+      </div>
+      <div class="mod-cta">Open Module 5 →</div>
+    </div>
+
+  </div>
+
+  <!-- TOOLS -->
+  <div class="section-label">Course Tools</div>
+  <div class="tools-grid">
+    <div class="tool-card" onclick="location.href='module-1-foundations.html#audit'">
+      <div class="tool-icon">🎯</div>
+      <div class="tool-name">Workflow Audit Tool</div>
+      <div class="tool-desc">Score your tasks to find your top AI opportunities.</div>
+    </div>
+    <div class="tool-card" onclick="location.href='module-3-agent-framework.html'">
+      <div class="tool-icon">🤖</div>
+      <div class="tool-name">AGENT Framework Worksheet</div>
+      <div class="tool-desc">Design an implementation-ready agentic workflow.</div>
+    </div>
+    <div class="tool-card" onclick="location.href='prompt-library.html'">
+      <div class="tool-icon">📚</div>
+      <div class="tool-name">Prompt Library</div>
+      <div class="tool-desc">60+ reusable prompts for Product &amp; Engineering roles.</div>
+    </div>
+    <div class="tool-card" onclick="location.href='roi-tracker.html'">
+      <div class="tool-icon">📊</div>
+      <div class="tool-name">ROI Tracker</div>
+      <div class="tool-desc">Log time saved before/after for each AI use case.</div>
+    </div>
+  </div>
+
+  <!-- THIS WEEK -->
+  <div class="section-label">This Week's Plan (Week 1)</div>
+  <div class="week-plan" id="week-plan">
+    <div class="wp-row">
+      <div class="wp-check" id="wp0" onclick="toggleCheck(0)"></div>
+      <div class="wp-text"><div class="wp-title">Complete Module 1: Lesson 1 — How LLMs Work</div><div class="wp-sub">Anthropic Academy "AI Fluency" Lesson 1–3 + 3Blue1Brown video</div></div>
+      <div class="wp-time">45 min</div>
+    </div>
+    <div class="wp-row">
+      <div class="wp-check" id="wp1" onclick="toggleCheck(1)"></div>
+      <div class="wp-text"><div class="wp-title">Complete Module 1: Lesson 2 — Prompt Engineering</div><div class="wp-sub">Anthropic Academy "Claude 101" + write 3 prompts for one real task</div></div>
+      <div class="wp-time">60 min</div>
+    </div>
+    <div class="wp-row">
+      <div class="wp-check" id="wp2" onclick="toggleCheck(2)"></div>
+      <div class="wp-text"><div class="wp-title">Run the Workflow Audit Tool</div><div class="wp-sub">Score your top 10 tasks → identify your 3 priority AI use cases</div></div>
+      <div class="wp-time">90 min</div>
+    </div>
+    <div class="wp-row">
+      <div class="wp-check" id="wp3" onclick="toggleCheck(3)"></div>
+      <div class="wp-text"><div class="wp-title">Set up your AI toolkit</div><div class="wp-sub">Claude Pro / ChatGPT Plus · Fathom for meetings · Prompt library file</div></div>
+      <div class="wp-time">30 min</div>
+    </div>
+    <div class="wp-row">
+      <div class="wp-check" id="wp4" onclick="toggleCheck(4)"></div>
+      <div class="wp-text"><div class="wp-title">Log your first ROI baseline</div><div class="wp-sub">Record "before AI" time for your top 3 tasks in the ROI Tracker</div></div>
+      <div class="wp-time">20 min</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Shared localStorage helpers ──────────────────────────
+function save(key,val){try{localStorage.setItem('aicourse_'+key,JSON.stringify(val))}catch(e){}}
+function load(key,def){try{var v=localStorage.getItem('aicourse_'+key);return v!==null?JSON.parse(v):def}catch(e){return def}}
+
+// ── Date ──────────────────────────────────────────────────
+var d=new Date();
+document.getElementById('today-date').textContent=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+// ── Weekly checks ─────────────────────────────────────────
+var checks=load('dash_checks',[false,false,false,false,false]);
+checks.forEach(function(v,i){if(v)document.getElementById('wp'+i).classList.add('done')});
+function toggleCheck(i){checks[i]=!checks[i];document.getElementById('wp'+i).classList.toggle('done',checks[i]);save('dash_checks',checks)}
+
+// ── Module progress ───────────────────────────────────────
+var modules=['m1','m2','m3','m4','m5'];
+var totals=[4,4,4,4,4];
+var allDone=0, allTotal=20;
+modules.forEach(function(m,idx){
+  var done=load(m+'_done',0);
+  allDone+=done;
+  var pct=Math.round(done/totals[idx]*100);
+  document.getElementById(m+'-bar').style.width=pct+'%';
+  document.getElementById(m+'-label').textContent=done+' / '+totals[idx]+' lessons';
+  document.getElementById(m+'-pct').textContent=pct+'%';
+});
+document.getElementById('overall-bar').style.width=Math.round(allDone/allTotal*100)+'%';
+document.getElementById('overall-pct').textContent=Math.round(allDone/allTotal*100)+'%';
+document.getElementById('overall-lessons').textContent=allDone+' of '+allTotal+' lessons complete';
+
+// ── Stats ─────────────────────────────────────────────────
+document.getElementById('stat-hrs').textContent=load('total_hrs_saved','0')+'h';
+document.getElementById('stat-lessons').textContent=allDone;
+document.getElementById('stat-prompts').textContent=load('prompt_count',0);
+var wkNum=load('current_week',1);
+document.getElementById('stat-week').textContent='Wk '+wkNum;
+document.getElementById('current-week-badge').textContent='Week '+wkNum;
+</script>
+</body>
+</html>

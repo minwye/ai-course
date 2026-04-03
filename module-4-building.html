@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 4 — Building Agents | AI Course</title>
+<style>
+:root{--bg:#0f1117;--s1:#1a1d2e;--s2:#222638;--bd:#2e3150;--ac:#6c63ff;--g:#00d4aa;--r:#ff6b6b;--y:#f7c948;--tx:#e8eaf6;--mu:#8b90b8;--wh:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+a{color:var(--ac);text-decoration:none}
+.topbar{background:var(--s1);border-bottom:1px solid var(--bd);padding:14px 28px;display:flex;align-items:center;gap:16px}
+.back{color:var(--mu);font-size:13px}
+.back:hover{color:var(--tx)}
+.topbar-title{font-size:16px;font-weight:700;color:var(--wh)}
+.mod-badge{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);color:var(--r);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:auto}
+.container{max-width:860px;margin:0 auto;padding:32px 24px 60px}
+h2{font-size:26px;font-weight:800;color:var(--wh);margin-bottom:8px}
+.hero-desc{color:var(--mu);font-size:15px;margin-bottom:28px}
+.lesson{background:var(--s1);border:1px solid var(--bd);border-radius:14px;margin-bottom:16px;overflow:hidden}
+.lesson-header{padding:18px 20px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.lhc{width:26px;height:26px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:13px}
+.lhc.done{background:var(--g);border-color:var(--g);color:var(--bg)}
+.lh-info{flex:1}
+.lh-title{font-size:16px;font-weight:700;color:var(--wh)}
+.lh-meta{font-size:12px;color:var(--mu);margin-top:2px}
+.lh-time{font-size:12px;color:var(--y);font-weight:600;white-space:nowrap}
+.lesson-body{padding:0 20px 20px;border-top:1px solid var(--bd)}
+.lesson-body p{font-size:14px;color:var(--mu);line-height:1.7;margin:14px 0 10px}
+.resource-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.res-link{display:inline-flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--bd);color:var(--tx);font-size:12px;font-weight:600;padding:5px 12px;border-radius:8px;text-decoration:none;transition:border-color .2s}
+.res-link:hover{border-color:var(--ac);color:var(--ac)}
+.exercise{background:rgba(0,212,170,.04);border:1px solid rgba(0,212,170,.2);border-radius:10px;padding:14px 16px;margin-top:14px}
+.ex-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--g);margin-bottom:6px}
+.ex-desc{font-size:13px;color:var(--mu);margin-bottom:10px;line-height:1.6}
+textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:inherit;font-size:13px;padding:10px 12px;resize:vertical;outline:none;transition:border-color .2s}
+textarea:focus{border-color:var(--ac)}
+textarea::placeholder{color:var(--mu)}
+.save-btn{background:var(--ac);color:white;border:none;padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px}
+.saved-note{font-size:11px;color:var(--g);margin-left:8px;opacity:0;transition:opacity .3s}
+.mark-btn{background:transparent;border:1px solid var(--g);color:var(--g);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:14px;display:inline-block}
+.mark-btn:hover{background:var(--g);color:var(--bg)}
+.mark-btn.done-btn{background:rgba(0,212,170,.1);cursor:default}
+.code-block{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;font-size:12px;color:#c5c8e0;font-family:'Cascadia Code','Fira Code',monospace;white-space:pre-wrap;margin:10px 0;overflow-x:auto}
+.kw{color:#9d96ff} .str{color:var(--g)} .cm{color:var(--mu)}
+
+/* STEPS */
+.step-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.step-item{display:flex;gap:12px;align-items:flex-start;background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px 14px}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--ac);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;color:var(--tx);line-height:1.6}
+.step-text strong{color:var(--wh)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="topbar-title">Module 4 — Building Agents</div>
+  <div class="mod-badge">Weeks 4–5 · ~6 hrs</div>
+</div>
+
+<div class="container">
+  <h2>Building Agents — No-Code to Low-Code</h2>
+  <p class="hero-desc">Deploy your AGENT Framework design from Module 3. Start with Claude Projects, then build n8n workflows, and optionally touch the API. No production coding required.</p>
+
+  <!-- LESSON 1 -->
+  <div class="lesson" id="l1">
+    <div class="lesson-header" onclick="toggleLesson('l1')">
+      <div class="lhc" id="l1-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 4.1 — Claude Projects: Your AI Work Brain</div>
+        <div class="lh-meta">Best first step for any product/engineering workflow · No setup required</div>
+      </div>
+      <div class="lh-time">45 min</div>
+    </div>
+    <div class="lesson-body" id="l1-body" style="display:none">
+      <p>Claude Projects give you a persistent AI assistant that remembers your documents, role, writing style, and preferences across conversations. This is the closest thing to a "no-code agent" available today. For product and engineering work, set up separate projects for: PRD work, code review, research, and customer feedback analysis.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://claude.ai" target="_blank">⚡ claude.ai → Projects tab</a>
+        <a class="res-link" href="https://anthropic.skilljar.com/" target="_blank">📖 Anthropic Academy — Building with Claude</a>
+      </div>
+
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-top:14px">
+        <div style="font-size:13px;font-weight:700;color:var(--wh);margin-bottom:10px">🛠 Setting Up Your Product PM / Engineering Project</div>
+        <ol class="step-list">
+          <li class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Create a new Project</strong> in Claude.ai called "Product Work" or "Engineering Assistant"</div></li>
+          <li class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Add a System Prompt</strong>: "You are a senior product manager / staff engineer assisting me. My company is [X]. My role is [Y]. When writing, match my tone: [direct/formal/casual]. Always ask clarifying questions before writing long outputs."</div></li>
+          <li class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Upload key context docs</strong>: product strategy doc, engineering principles, brand voice guide, recent PRDs, team structure</div></li>
+          <li class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Add your best prompts</strong> as Artifacts in the project so they're always accessible</div></li>
+          <li class="step-item"><div class="step-num">5</div><div class="step-text"><strong>Test with a real task</strong>: "Write a PRD for [feature]" — see how it uses your context</div></li>
+        </ol>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-label">✏️ Exercise</div>
+        <div class="ex-desc">Set up one Claude Project for your primary use case (PRD work, code review, or research). Use it for 5 tasks in one week. Note what the persistent context improved vs. starting fresh each time.</div>
+        <textarea id="l1-notes" rows="4" placeholder="Project I created:&#10;Docs I uploaded:&#10;System prompt I wrote:&#10;Improvement vs. regular chat:"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l1')">Save</button><span class="saved-note" id="l1-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l1-mark" onclick="markDone(1)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 2 -->
+  <div class="lesson" id="l2">
+    <div class="lesson-header" onclick="toggleLesson('l2')">
+      <div class="lhc" id="l2-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 4.2 — n8n: Build Your First Multi-Step AI Workflow</div>
+        <div class="lh-meta">No-code agent building · Connects AI to 400+ tools</div>
+      </div>
+      <div class="lh-time">90 min</div>
+    </div>
+    <div class="lesson-body" id="l2-body" style="display:none">
+      <p>n8n is a visual workflow builder (like Zapier but more powerful and free). It lets you connect triggers (webhook, schedule, email) → processing (AI via Claude/OpenAI API) → actions (Slack, Jira, Google Sheets, email). This is how you build the "automated competitive analysis" or "ticket summarizer" from your AGENT Framework design.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://n8n.io" target="_blank">🛠 n8n.io (free cloud trial or self-host)</a>
+        <a class="res-link" href="https://make.com" target="_blank">🛠 Make.com (free tier)</a>
+        <a class="res-link" href="https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-langchain.openai/" target="_blank">📖 n8n + AI nodes docs</a>
+      </div>
+
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-top:14px">
+        <div style="font-size:13px;font-weight:700;color:var(--wh);margin-bottom:10px">🤖 Example: "Automated Jira Ticket Summarizer" Workflow</div>
+        <ol class="step-list">
+          <li class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Trigger:</strong> Schedule (every Monday 8am) or Webhook (new Jira ticket created)</div></li>
+          <li class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Fetch:</strong> Jira node → get all tickets in "Needs Review" status</div></li>
+          <li class="step-item"><div class="step-num">3</div><div class="step-text"><strong>AI process:</strong> Claude API node → "Summarize these tickets. For each: one sentence summary, priority (High/Med/Low), and suggested assignee based on the description. Output as a formatted list."</div></li>
+          <li class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Output:</strong> Slack node → post to #product-standup with the summary (pending human review button)</div></li>
+          <li class="step-item"><div class="step-num">5</div><div class="step-text"><strong>Human gate:</strong> Wait for a team member to click "Approve and post" before it goes anywhere customer-facing</div></li>
+        </ol>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-label">✏️ Exercise — Build Your First n8n Workflow</div>
+        <div class="ex-desc">Start with the simplest possible version of your AGENT Framework workflow from Module 3. A good first workflow: (1) Scheduled trigger, (2) HTTP request to fetch data (or paste data manually), (3) Claude API call to process it, (4) Send result to email or Slack as a draft.</div>
+        <textarea id="l2-notes" rows="5" placeholder="Workflow I built:&#10;Trigger type:&#10;What the AI step does:&#10;Where the output goes:&#10;Time it saves vs. manual:&#10;What I'd add next:"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l2')">Save</button><span class="saved-note" id="l2-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l2-mark" onclick="markDone(2)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 3 -->
+  <div class="lesson" id="l3">
+    <div class="lesson-header" onclick="toggleLesson('l3')">
+      <div class="lhc" id="l3-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 4.3 — Google / Microsoft Workspace AI Agents</div>
+        <div class="lh-meta">Zero infrastructure · Works inside tools you already use</div>
+      </div>
+      <div class="lh-time">60 min</div>
+    </div>
+    <div class="lesson-body" id="l3-body" style="display:none">
+      <p>If you're in a corporate environment, you likely already have Gemini in Google Workspace or Microsoft Copilot. These tools let you build AI agents directly inside Docs, Sheets, Gmail, and Teams without any infrastructure. For engineering teams, GitHub Copilot Workspace (currently in beta) goes further — it can plan and implement multi-file code changes.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://workspace.google.com/studio/" target="_blank">🤖 Google Workspace Studio (Gemini)</a>
+        <a class="res-link" href="https://copilot.microsoft.com/studio" target="_blank">🤖 Microsoft Copilot Studio</a>
+        <a class="res-link" href="https://github.com/features/copilot" target="_blank">💻 GitHub Copilot Workspace</a>
+      </div>
+      <div class="exercise">
+        <div class="ex-label">✏️ Exercise</div>
+        <div class="ex-desc">Check whether your company has a Google Workspace or Microsoft 365 AI license. If yes: build one Workspace automation that replaces a manual step in your workflow. Common wins: auto-summarize new emails into a Google Sheet, generate meeting agendas from calendar events, or auto-draft replies to common ticket types.</div>
+        <textarea id="l3-notes" rows="4" placeholder="What workspace tools I have access to:&#10;Automation I built or plan to build:&#10;Manual step it replaces:&#10;Time saved:"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l3')">Save</button><span class="saved-note" id="l3-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l3-mark" onclick="markDone(3)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 4 -->
+  <div class="lesson" id="l4">
+    <div class="lesson-header" onclick="toggleLesson('l4')">
+      <div class="lhc" id="l4-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 4.4 — Optional: First Steps Into the Claude API</div>
+        <div class="lh-meta">Optional but powerful · 20 lines of Python unlocks everything</div>
+      </div>
+      <div class="lh-time">90 min</div>
+    </div>
+    <div class="lesson-body" id="l4-body" style="display:none">
+      <p>Even if you're not a software engineer, a tiny amount of Python gives you dramatically more flexibility than any no-code tool. The Claude API is exceptionally well-designed and the SDKs handle all the complexity. AI itself can write 90% of the boilerplate — you just need to understand enough to modify and run it.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://anthropic.skilljar.com/" target="_blank">🎓 Anthropic Academy — "Building with the Claude API"</a>
+        <a class="res-link" href="https://learn.deeplearning.ai/courses/agent-skills-with-anthropic" target="_blank">🎓 DeepLearning.AI — "Agent Skills with Anthropic"</a>
+        <a class="res-link" href="https://docs.anthropic.com/en/api/getting-started" target="_blank">📖 Claude API Quickstart</a>
+      </div>
+
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-top:14px">
+        <div style="font-size:12px;font-weight:700;color:var(--mu);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Minimum viable Claude API call (Python)</div>
+        <div class="code-block"><span class="kw">import</span> anthropic
+
+client = anthropic.Anthropic(api_key=<span class="str">"your-api-key"</span>)
+
+<span class="cm"># Replace this with your actual task</span>
+my_document = <span class="str">"""[PASTE YOUR DOCUMENT HERE]"""</span>
+
+message = client.messages.create(
+    model=<span class="str">"claude-sonnet-4-6"</span>,
+    max_tokens=<span class="str">1024</span>,
+    messages=[
+        {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">f"""
+You are a senior product manager.
+Analyze this document and extract:
+1. Key decisions
+2. Action items with owners
+3. Open risks
+
+Document: {my_document}
+"""</span>}
+    ]
+)
+
+<span class="kw">print</span>(message.content[<span class="str">0</span>].text)</div>
+        <div style="font-size:12px;color:var(--mu);margin-top:8px">Run this with: <code style="color:var(--g)">pip install anthropic</code> then <code style="color:var(--g)">python script.py</code></div>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-label">✏️ Exercise (Optional)</div>
+        <div class="ex-desc">Get an Anthropic API key (console.anthropic.com). Copy the code above into a Python file. Paste a real document. Run it. If it works, try modifying the prompt. If you want to go further, take the Anthropic Academy "Building with the Claude API" course (free).</div>
+        <textarea id="l4-notes" rows="4" placeholder="Did I try the API? (yes/no):&#10;What I built or ran:&#10;What worked:&#10;What I want to build next with the API:"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l4')">Save</button><span class="saved-note" id="l4-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l4-mark" onclick="markDone(4)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <div style="background:rgba(255,107,107,.05);border:1px solid rgba(255,107,107,.2);border-radius:14px;padding:20px;margin-top:8px">
+    <div style="font-size:15px;font-weight:700;color:var(--wh);margin-bottom:8px">📋 Module 4 Completion Check</div>
+    <div style="font-size:13px;color:var(--mu)">By the end of this module you should have: (1) a running Claude Project for your main use case, (2) at least one multi-step automation in n8n or your workspace tools, and (3) a clear sense of where the API would help. Take your results to Module 5 to measure and scale.</div>
+    <div style="margin-top:12px"><a href="module-5-strategy.html" style="color:var(--ac);font-weight:600;font-size:14px">→ Module 5: Measure ROI and Scale</a></div>
+  </div>
+</div>
+
+<script>
+function sv(k,v){try{localStorage.setItem('aicourse_'+k,JSON.stringify(v))}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem('aicourse_'+k);return v!==null?JSON.parse(v):d}catch(e){return d}}
+function toggleLesson(id){var b=document.getElementById(id+'-body');b.style.display=b.style.display==='none'?'block':'none'}
+function markDone(n){var id='l'+n;var done=ld('m4_lessons',{});done[id]=true;sv('m4_lessons',done);document.getElementById(id+'-check').classList.add('done');var m=document.getElementById(id+'-mark');m.textContent='✓ Completed';m.classList.add('done-btn');sv('m4_done',Object.keys(done).length)}
+function saveNote(id){sv('m4_note_'+id,document.getElementById(id+'-notes').value);var s=document.getElementById(id+'-saved');s.style.opacity=1;setTimeout(function(){s.style.opacity=0},2000)}
+window.addEventListener('load',function(){
+  var done=ld('m4_lessons',{});
+  ['l1','l2','l3','l4'].forEach(function(id){if(done[id]){document.getElementById(id+'-check').classList.add('done');document.getElementById(id+'-mark').textContent='✓ Completed';document.getElementById(id+'-mark').classList.add('done-btn')}});
+  ['l1','l2','l3','l4'].forEach(function(id){var v=ld('m4_note_'+id,'');if(v&&document.getElementById(id+'-notes'))document.getElementById(id+'-notes').value=v});
+  var opened=false;
+  ['l1','l2','l3','l4'].forEach(function(id){if(!done[id]&&!opened){toggleLesson(id);opened=true}});
+});
+</script>
+</body>
+</html>

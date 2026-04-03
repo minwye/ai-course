@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prompt Library — AI Course</title>
+<style>
+:root{--bg:#0f1117;--s1:#1a1d2e;--s2:#222638;--bd:#2e3150;--ac:#6c63ff;--g:#00d4aa;--r:#ff6b6b;--y:#f7c948;--tx:#e8eaf6;--mu:#8b90b8;--wh:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+a{color:var(--ac)}
+.topbar{background:var(--s1);border-bottom:1px solid var(--bd);padding:14px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.back{color:var(--mu);font-size:13px;cursor:pointer;text-decoration:none}
+.back:hover{color:var(--tx)}
+.topbar-title{font-size:16px;font-weight:700;color:var(--wh)}
+.prompt-count{margin-left:auto;font-size:12px;color:var(--mu)}
+.prompt-count span{color:var(--g);font-weight:700}
+
+.layout{display:flex;min-height:calc(100vh - 52px)}
+/* SIDEBAR */
+.sidebar{width:220px;background:var(--s1);border-right:1px solid var(--bd);padding:16px;flex-shrink:0;overflow-y:auto;position:sticky;top:0;height:calc(100vh - 52px)}
+.sidebar h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--mu);margin-bottom:10px;margin-top:16px}
+.sidebar h3:first-child{margin-top:0}
+.cat-btn{width:100%;text-align:left;background:transparent;border:none;color:var(--mu);font-size:13px;padding:6px 10px;border-radius:6px;cursor:pointer;transition:all .2s;display:block;margin-bottom:2px}
+.cat-btn:hover{background:var(--s2);color:var(--tx)}
+.cat-btn.active{background:rgba(108,99,255,.15);color:var(--ac);font-weight:600}
+
+/* MAIN */
+.main{flex:1;padding:24px;overflow-y:auto}
+.search-bar{display:flex;gap:10px;margin-bottom:20px}
+input[type=search]{flex:1;background:var(--s1);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:inherit;font-size:14px;padding:9px 14px;outline:none;transition:border-color .2s}
+input[type=search]:focus{border-color:var(--ac)}
+input[type=search]::placeholder{color:var(--mu)}
+.add-btn{background:var(--ac);color:white;border:none;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+
+/* SECTION */
+.section-title{font-size:18px;font-weight:800;color:var(--wh);margin-bottom:4px}
+.section-sub{font-size:13px;color:var(--mu);margin-bottom:16px}
+
+/* PROMPT CARDS */
+.prompts-grid{display:flex;flex-direction:column;gap:12px}
+.prompt-card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:18px;transition:border-color .2s}
+.prompt-card:hover{border-color:rgba(108,99,255,.4)}
+.pc-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.pc-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.tag-prd{background:rgba(247,201,72,.15);color:var(--y)} .tag-research{background:rgba(0,212,170,.15);color:var(--g)} .tag-code{background:rgba(108,99,255,.15);color:#9d96ff} .tag-writing{background:rgba(255,107,107,.15);color:var(--r)} .tag-meeting{background:rgba(180,170,255,.2);color:#c0b8ff} .tag-custom{background:rgba(255,255,255,.07);color:var(--mu)}
+.pc-title{font-size:15px;font-weight:700;color:var(--wh)}
+.pc-desc{font-size:12px;color:var(--mu);margin-top:3px}
+.pc-body{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;font-size:13px;color:#c5c8e0;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:'Cascadia Code','Fira Code',monospace;position:relative}
+.pc-placeholder{color:rgba(108,99,255,.8);font-style:italic}
+.pc-actions{display:flex;gap:8px;margin-top:10px}
+.copy-btn{background:transparent;border:1px solid var(--bd);color:var(--mu);font-size:12px;font-weight:600;padding:5px 12px;border-radius:6px;cursor:pointer;transition:all .2s}
+.copy-btn:hover{border-color:var(--g);color:var(--g)}
+.copy-btn.copied{border-color:var(--g);color:var(--g)}
+.save-fav{background:transparent;border:1px solid var(--bd);color:var(--mu);font-size:12px;font-weight:600;padding:5px 12px;border-radius:6px;cursor:pointer;transition:all .2s}
+.save-fav:hover{border-color:var(--y);color:var(--y)}
+.save-fav.faved{border-color:var(--y);color:var(--y)}
+
+/* ADD CUSTOM MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:100;display:none;padding:16px}
+.modal{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:24px;width:100%;max-width:600px}
+.modal h3{font-size:18px;font-weight:700;color:var(--wh);margin-bottom:16px}
+.field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mu);margin-bottom:6px;margin-top:14px}
+input[type=text],select,textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:inherit;font-size:13px;padding:9px 12px;outline:none;transition:border-color .2s}
+input[type=text]:focus,select:focus,textarea:focus{border-color:var(--ac)}
+select{cursor:pointer}
+textarea{resize:vertical;min-height:120px}
+.modal-actions{display:flex;gap:10px;margin-top:18px}
+.save-modal{background:var(--ac);color:white;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.cancel-modal{background:transparent;border:1px solid var(--bd);color:var(--mu);padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer}
+.cancel-modal:hover{border-color:var(--r);color:var(--r)}
+
+@media(max-width:640px){.sidebar{display:none}.layout{display:block}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="topbar-title">Prompt Library — Product &amp; Engineering</div>
+  <div class="prompt-count"><span id="prompt-count">0</span> prompts saved</div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <h3>Categories</h3>
+    <button class="cat-btn active" onclick="filterCat('all')">📚 All Prompts</button>
+    <button class="cat-btn" onclick="filterCat('prd')">📄 PRD &amp; Specs</button>
+    <button class="cat-btn" onclick="filterCat('research')">🔍 Research &amp; Analysis</button>
+    <button class="cat-btn" onclick="filterCat('code')">💻 Code &amp; Engineering</button>
+    <button class="cat-btn" onclick="filterCat('writing')">✍️ Writing &amp; Comms</button>
+    <button class="cat-btn" onclick="filterCat('meeting')">🗣️ Meetings &amp; Planning</button>
+    <h3>My Prompts</h3>
+    <button class="cat-btn" onclick="filterCat('custom')">⭐ My Custom Prompts</button>
+    <button class="cat-btn" onclick="filterCat('faved')">🌟 Favorites</button>
+  </div>
+
+  <div class="main">
+    <div class="search-bar">
+      <input type="search" id="search" placeholder="Search prompts..." oninput="renderPrompts()">
+      <button class="add-btn" onclick="openModal()">+ Add Prompt</button>
+    </div>
+
+    <div class="section-title" id="section-title">All Prompts</div>
+    <div class="section-sub" id="section-sub">Curated for Product &amp; Engineering roles. Click Copy to use, star to favorite.</div>
+    <div class="prompts-grid" id="prompts-list"></div>
+  </div>
+</div>
+
+<!-- ADD PROMPT MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="closeModal(event)">
+  <div class="modal">
+    <h3>Add Custom Prompt</h3>
+    <div class="field-label">Prompt Name</div>
+    <input type="text" id="new-name" placeholder="e.g. Draft JIRA acceptance criteria">
+    <div class="field-label">Category</div>
+    <select id="new-cat">
+      <option value="prd">PRD &amp; Specs</option>
+      <option value="research">Research &amp; Analysis</option>
+      <option value="code">Code &amp; Engineering</option>
+      <option value="writing">Writing &amp; Comms</option>
+      <option value="meeting">Meetings &amp; Planning</option>
+      <option value="custom">Other / Custom</option>
+    </select>
+    <div class="field-label">Prompt Text (use [BRACKETS] for variables)</div>
+    <textarea id="new-prompt" placeholder="You are a [ROLE]. Your task is to [TASK].&#10;&#10;Context: [CONTEXT]&#10;&#10;Please output: [FORMAT]"></textarea>
+    <div class="field-label">Short description (optional)</div>
+    <input type="text" id="new-desc" placeholder="When to use this prompt">
+    <div class="modal-actions">
+      <button class="save-modal" onclick="saveCustom()">Save Prompt</button>
+      <button class="cancel-modal" onclick="document.getElementById('modal-bg').style.display='none'">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function s(k,v){try{localStorage.setItem('aicourse_'+k,JSON.stringify(v))}catch(e){}}
+function l(k,d){try{var v=localStorage.getItem('aicourse_'+k);return v!==null?JSON.parse(v):d}catch(e){return d}}
+
+var builtIn=[
+  // PRD & Specs
+  {id:'p1',cat:'prd',title:'PRD from User Research',desc:'Convert raw research into a structured PRD',text:`You are a senior product manager. I'm going to give you raw user research notes and I need you to convert them into a structured PRD section.
+
+Research notes: [PASTE RESEARCH NOTES HERE]
+
+Please produce:
+1. Problem statement (2–3 sentences, user-centric)
+2. User personas affected (with pain points)
+3. Jobs to be done (format: "When [situation], I want to [motivation], so I can [outcome]")
+4. Success metrics (2–3 measurable KPIs)
+5. Proposed solution (high-level, not prescriptive)
+6. Open questions that need answers before development begins`},
+  {id:'p2',cat:'prd',title:'Feature Spec Writer',desc:'Draft a feature spec from a one-line idea',text:`You are a product manager writing a feature specification for an engineering team.
+
+Feature idea: [ONE-LINE DESCRIPTION]
+User context: [WHO USES THIS AND WHY]
+Constraints: [TECHNICAL OR BUSINESS CONSTRAINTS IF ANY]
+
+Write a complete feature spec including:
+- Overview (2 sentences)
+- Goals and non-goals (bulleted)
+- User stories (at least 3, in "As a [user], I want [action] so that [benefit]" format)
+- Acceptance criteria (numbered, testable)
+- Edge cases to consider (at least 3)
+- Open questions for engineering
+- Out of scope (explicit list)`},
+  {id:'p3',cat:'prd',title:'JIRA Ticket Writer',desc:'Create well-formed tickets from a brief description',text:`Convert the following description into a well-structured JIRA ticket.
+
+Description: [BRIEF DESCRIPTION OF THE WORK]
+
+Output format:
+**Title:** [Concise action-oriented title, max 8 words]
+**Type:** [Bug/Feature/Task/Improvement]
+**Summary:** [2-3 sentence description of what and why]
+**Acceptance Criteria:**
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
+- [ ] [Criterion 3]
+**Technical Notes:** [Any implementation hints or dependencies]
+**Definition of Done:** [How will we know this is complete?]
+**Story Points:** [Estimate: 1/2/3/5/8] with reasoning`},
+  {id:'p4',cat:'prd',title:'PRD Review & Gap Finder',desc:'Identify weaknesses in an existing PRD',text:`You are a senior product reviewer. Critically review the following PRD and identify:
+
+[PASTE PRD HERE]
+
+Review it for:
+1. Unclear or missing success metrics
+2. Assumptions that aren't stated explicitly
+3. Edge cases not covered
+4. Engineering ambiguities that will cause back-and-forth
+5. Missing stakeholder perspectives
+6. Scope creep risks
+
+For each issue found, explain: (a) what's wrong, (b) why it matters, (c) suggested fix.
+End with an overall assessment: Is this PRD ready for engineering handoff? Why or why not?`},
+
+  // Research & Analysis
+  {id:'r1',cat:'research',title:'Competitive Analysis Report',desc:'Research a competitor and structure findings',text:`You are a product strategist. Research [COMPETITOR NAME] and produce a structured competitive analysis.
+
+My product: [YOUR PRODUCT/COMPANY]
+Focus area: [SPECIFIC FEATURE AREA OR MARKET SEGMENT]
+
+Structure your analysis as:
+1. Company overview (founding, funding, size, positioning)
+2. Product strengths (what they do better than us)
+3. Product weaknesses (gaps or limitations)
+4. Pricing and packaging
+5. Recent product moves (last 6 months)
+6. Target customer profile
+7. Key differentiators vs. our product
+8. Threats to us (what worries you most?)
+9. Opportunities (where they're weak that we could win)
+10. Strategic recommendation (1 paragraph: what should we do differently based on this?)`},
+  {id:'r2',cat:'research',title:'User Feedback Synthesizer',desc:'Synthesize a batch of user feedback into themes',text:`You are a UX researcher. I'm going to give you a batch of user feedback (interviews, survey responses, support tickets). Your job is to synthesize it into actionable insights.
+
+Raw feedback: [PASTE FEEDBACK HERE]
+
+Please produce:
+1. Top 3–5 themes (each with: theme name, frequency, representative quote, severity)
+2. Ranked list of user pain points (most common/severe first)
+3. Unmet needs (what are users trying to do that the product doesn't enable?)
+4. Positive signals (what's working well that we should protect?)
+5. Recommended actions (mapped to themes, with effort/impact estimates)
+6. Questions this raises for further research`},
+  {id:'r3',cat:'research',title:'Market Research Synthesizer',desc:'Turn web research into a structured analysis',text:`You are a market analyst. I've gathered the following research on [MARKET/TOPIC]. Synthesize it into a structured market analysis.
+
+Research notes / sources: [PASTE YOUR NOTES OR URLs]
+
+Produce:
+1. Market overview (size, growth rate, key trends — cite sources)
+2. Key players (top 3–5, with positioning)
+3. Customer segments (who buys, why)
+4. Market forces (tailwinds and headwinds)
+5. Whitespace opportunities (underserved segments or needs)
+6. Risks and threats
+7. Bottom line: one paragraph with your strategic read on this market`},
+  {id:'r4',cat:'research',title:'Architecture Decision Researcher',desc:'Research tradeoffs for a technical decision',text:`You are a senior software architect. Help me research the tradeoffs for the following architecture decision.
+
+Decision: [e.g. "Should we use Kafka or SQS for our event streaming?"]
+Context: [System scale, team size, existing stack, constraints]
+Requirements: [e.g. "Needs to handle 10k events/sec, team has no Kafka experience, must be managed service"]
+
+Research and document:
+1. Option A: [first option] — pros, cons, cost estimate, operational complexity
+2. Option B: [second option] — pros, cons, cost estimate, operational complexity
+3. Key tradeoffs (make a comparison table)
+4. Which option fits our requirements better, and why
+5. Risks to watch for
+6. Recommendation with confidence level`},
+
+  // Code & Engineering
+  {id:'c1',cat:'code',title:'Code Review Assistant',desc:'Get a thorough code review with specific feedback',text:`You are a senior software engineer performing a thorough code review. Review the following code:
+
+\`\`\`[LANGUAGE]
+[PASTE CODE HERE]
+\`\`\`
+
+Context: [What this code does, what language/framework, any specific concerns]
+
+Review for:
+1. **Correctness** — bugs, edge cases, off-by-one errors
+2. **Security** — injection risks, auth issues, data exposure
+3. **Performance** — N+1 queries, unnecessary computation, memory leaks
+4. **Readability** — naming, complexity, missing comments
+5. **Testability** — is it easy to unit test?
+6. **Error handling** — what happens when things fail?
+
+For each issue: severity (Critical/High/Medium/Low), description, and suggested fix with example code.
+End with: overall assessment and top 3 priorities to fix before merging.`},
+  {id:'c2',cat:'code',title:'Test Case Generator',desc:'Generate comprehensive test cases for a function',text:`Generate comprehensive test cases for the following code:
+
+\`\`\`[LANGUAGE]
+[PASTE FUNCTION/CLASS HERE]
+\`\`\`
+
+Generate tests covering:
+1. Happy path (normal expected inputs)
+2. Edge cases (empty, null, boundary values, max values)
+3. Error cases (invalid inputs, failure modes)
+4. Performance considerations (if relevant)
+
+Write the tests in [TESTING FRAMEWORK, e.g. Jest/pytest/JUnit] with descriptive names following the pattern: "should [do X] when [Y condition]". Include setup/teardown if needed.`},
+  {id:'c3',cat:'code',title:'Documentation Writer',desc:'Write clear docs from code',text:`Write comprehensive documentation for the following code. The audience is a developer unfamiliar with this codebase.
+
+\`\`\`[LANGUAGE]
+[PASTE CODE HERE]
+\`\`\`
+
+Include:
+1. **Overview** — what this does in plain English (2–3 sentences)
+2. **Function/Method docs** — for each public function: purpose, parameters (type + description), return value, exceptions/errors thrown, example usage
+3. **Usage examples** — at least 2 realistic code examples
+4. **Important notes** — gotchas, limitations, when NOT to use this
+5. **Dependencies** — what this relies on externally`},
+  {id:'c4',cat:'code',title:'Debug Hypothesis Generator',desc:'Systematically diagnose a bug',text:`You are a debugging expert. Help me systematically diagnose this bug.
+
+Bug description: [WHAT IS HAPPENING vs. WHAT SHOULD HAPPEN]
+Environment: [Language, framework, OS, relevant versions]
+Steps to reproduce: [Numbered steps]
+Error message / stack trace: [PASTE HERE]
+Code involved: [PASTE RELEVANT CODE]
+What I've already tried: [LIST]
+
+Please:
+1. Form 3–5 hypotheses ranked by likelihood, with reasoning for each
+2. For each hypothesis: what specific evidence would confirm or rule it out?
+3. Suggest a debugging sequence (what to check first, second, etc.)
+4. Highlight any patterns that look suspicious in the code
+5. List related bugs this could be confused with`},
+
+  // Writing & Comms
+  {id:'w1',cat:'writing',title:'Release Notes Writer',desc:'Generate release notes from commits or tickets',text:`You are a technical writer creating release notes for [PRODUCT NAME].
+
+Source material (commits, tickets, or bullet points):
+[PASTE COMMITS OR TICKET TITLES HERE]
+
+Audience: [End users / Developers / Both]
+
+Format release notes with:
+- **Version X.X.X** — [Date]
+- ✨ **New Features** (user-facing improvements)
+- 🐛 **Bug Fixes** (what was broken, now fixed)
+- ⚡ **Improvements** (performance, UX refinements)
+- ⚠️ **Breaking Changes** (if any, with migration steps)
+- 🗑️ **Deprecated** (what's going away, and when)
+
+Write in plain language. No jargon. Each item: one sentence explaining what changed and why it matters to the user.`},
+  {id:'w2',cat:'writing',title:'Engineering Blog Post',desc:'Draft a technical blog post from notes',text:`You are a technical writer. Write an engineering blog post based on my notes below.
+
+Topic: [WHAT WE BUILT / LEARNED / SOLVED]
+Audience: [Software engineers / Product managers / General technical audience]
+Tone: [Conversational and educational / Formal / Storytelling]
+Target length: ~800 words
+
+My notes / bullet points:
+[PASTE YOUR NOTES HERE]
+
+Structure:
+1. Hook (first sentence that makes an engineer want to keep reading)
+2. The problem we faced (with concrete stakes)
+3. What we tried that didn't work (honesty builds credibility)
+4. The solution we found
+5. Results / impact
+6. What we'd do differently
+7. Takeaway for the reader`},
+  {id:'w3',cat:'writing',title:'Status Update Writer',desc:'Write a clear stakeholder status update',text:`Write a [weekly/monthly] status update for [PROJECT NAME] for [AUDIENCE: engineering leadership / exec team / stakeholders].
+
+Current state:
+- What was planned: [LIST]
+- What was completed: [LIST]
+- What's in progress: [LIST]
+- Blockers or risks: [LIST]
+- Next priorities: [LIST]
+
+Format: Executive summary first (3 bullets max), then detail.
+Tone: Direct, factual, no jargon. Flag any risks clearly.
+If there are blockers, suggest what decision or help is needed.`},
+  {id:'w4',cat:'writing',title:'Engineering RFC Template',desc:'Draft a technical RFC or design doc',text:`Draft an engineering RFC (Request for Comments) for the following proposal.
+
+Problem being solved: [DESCRIPTION]
+Proposed solution: [HIGH-LEVEL IDEA]
+Alternatives considered: [LIST ANY YOU KNOW OF]
+Author: [NAME]
+
+Structure the RFC as:
+## Summary
+[2–3 sentence TL;DR]
+
+## Motivation
+[Why does this problem need solving? What's the cost of not solving it?]
+
+## Detailed Design
+[How exactly would this work? Be specific enough for engineers to implement.]
+
+## Drawbacks
+[Honest list of downsides, tradeoffs, and technical debt created]
+
+## Alternatives
+[What else was considered and why was this rejected in favor of the proposal?]
+
+## Unresolved Questions
+[What needs to be figured out before this can be fully decided?]`},
+
+  // Meetings & Planning
+  {id:'m1',cat:'meeting',title:'Meeting Notes Summarizer',desc:'Turn raw meeting notes into action items',text:`You are an efficient meeting facilitator. Transform the following raw meeting notes into a structured summary.
+
+Raw notes: [PASTE NOTES OR TRANSCRIPT HERE]
+
+Produce:
+**Meeting:** [Name] | **Date:** [Date] | **Attendees:** [List]
+
+**Decisions Made** (numbered, clear):
+1. ...
+
+**Action Items:**
+| Owner | Action | Due Date |
+|-------|--------|----------|
+| ...   | ...    | ...      |
+
+**Key Discussion Points** (3–5 bullets, most important first):
+•
+
+**Open Questions / Parking Lot:**
+•
+
+**Next Meeting:** [Date/topic if mentioned]
+
+Keep it under 300 words total. If something is unclear from the notes, mark it with [UNCLEAR] rather than guessing.`},
+  {id:'m2',cat:'meeting',title:'Sprint Planning Helper',desc:'Structure sprint planning from a backlog',text:`You are an experienced agile coach. Help me plan a sprint from this backlog.
+
+Sprint duration: [1 week / 2 weeks]
+Team capacity: [X developer-days, accounting for PTO/meetings: LIST]
+Sprint goal (rough idea): [WHAT WE WANT TO ACHIEVE]
+
+Backlog items (with rough sizes):
+[PASTE TICKET TITLES AND SIZES]
+
+Please:
+1. Suggest a focused sprint goal (1 sentence)
+2. Recommend which tickets to include (optimized for goal + capacity)
+3. Flag any tickets that are too vague for sprint planning (need more spec work)
+4. Identify dependencies between tickets
+5. Suggest what goes in the stretch goal bucket
+6. Flag risks to delivering the sprint goal`},
+  {id:'m3',cat:'meeting',title:'Retrospective Synthesizer',desc:'Extract themes and actions from a retro',text:`You are a scrum master synthesizing a sprint retrospective. Transform the following retro notes into structured insights and actions.
+
+Sprint: [SPRINT NAME/NUMBER]
+Team size: [N]
+Retro notes (What went well / What didn't / What to try):
+[PASTE NOTES HERE]
+
+Produce:
+**What We Should Keep** (top 3 strengths to protect):
+**What We Should Stop or Fix** (top 3 pain points, ranked by impact):
+**Experiments to Run Next Sprint** (specific, measurable, owned by someone):
+1. Action: / Owner: / How we'll measure success:
+
+**One metric to track** to see if we're improving:
+**Team health signal** (1–5 scale based on the retro energy): `},
+  {id:'m4',cat:'meeting',title:'1:1 Prep Assistant',desc:'Prepare for a manager 1:1 or report check-in',text:`Help me prepare for a 1:1 meeting.
+
+My role: [YOUR ROLE]
+Meeting with: [MANAGER / DIRECT REPORT / PEER]
+Context: [Any specific topics, recent projects, or issues]
+
+My rough bullet points / notes:
+[PASTE ANY THOUGHTS YOU HAVE]
+
+Help me:
+1. Prioritize what to cover (most important first)
+2. Frame any issues constructively (what happened, impact, proposed solution)
+3. Identify what I want to ask or get clarity on
+4. Note any decisions I need to make or get made
+5. Suggest one forward-looking question to close with
+
+Format as a structured agenda I can use during the call.`},
+];
+
+var currentCat='all';
+var favs=l('pl_favs',[]);
+var custom=l('pl_custom',[]);
+
+function getAllPrompts(){return builtIn.concat(custom)}
+
+function renderPrompts(){
+  var search=document.getElementById('search').value.toLowerCase();
+  var all=getAllPrompts();
+  var filtered=all.filter(function(p){
+    if(currentCat==='faved')return favs.indexOf(p.id)>-1;
+    if(currentCat==='custom')return p.custom;
+    if(currentCat!=='all'&&p.cat!==currentCat)return false;
+    if(search&&p.title.toLowerCase().indexOf(search)<0&&p.text.toLowerCase().indexOf(search)<0&&p.desc.toLowerCase().indexOf(search)<0)return false;
+    return true;
+  });
+  var list=document.getElementById('prompts-list');
+  list.innerHTML='';
+  if(filtered.length===0){list.innerHTML='<div style="color:var(--mu);font-size:14px;padding:20px 0">No prompts found. Try a different search or add your own.</div>';return}
+  filtered.forEach(function(p){
+    var faved=favs.indexOf(p.id)>-1;
+    var tagClass='tag-'+p.cat;
+    var tagLabel={prd:'PRD & Specs',research:'Research',code:'Engineering',writing:'Writing',meeting:'Meetings',custom:'Custom'}[p.cat]||p.cat;
+    var card=document.createElement('div');
+    card.className='prompt-card';
+    card.id='card-'+p.id;
+    card.innerHTML=
+      '<div class="pc-top">'+
+      '<span class="pc-tag '+tagClass+'">'+tagLabel+'</span>'+
+      '<div><div class="pc-title">'+esc(p.title)+'</div><div class="pc-desc">'+esc(p.desc)+'</div></div>'+
+      '</div>'+
+      '<div class="pc-body">'+formatPrompt(p.text)+'</div>'+
+      '<div class="pc-actions">'+
+      '<button class="copy-btn" onclick="copyPrompt(\''+p.id+'\')">📋 Copy</button>'+
+      '<button class="save-fav'+(faved?' faved':'')+'" id="fav-'+p.id+'" onclick="toggleFav(\''+p.id+'\')"><span>'+(faved?'★':'☆')+'</span> '+(faved?'Favorited':'Favorite')+'</button>'+
+      (p.custom?'<button class="copy-btn" onclick="deleteCustom(\''+p.id+'\')" style="margin-left:auto;color:var(--r)">Delete</button>':'')+
+      '</div>';
+    list.appendChild(card);
+  });
+  document.getElementById('prompt-count').textContent=getAllPrompts().length;
+}
+
+function formatPrompt(text){
+  return esc(text).replace(/\[([^\]]+)\]/g,'<span class="pc-placeholder">[$1]</span>');
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function copyPrompt(id){
+  var p=getAllPrompts().find(function(x){return x.id===id});
+  if(!p)return;
+  navigator.clipboard.writeText(p.text).then(function(){
+    var btn=document.querySelector('#card-'+id+' .copy-btn');
+    btn.textContent='✓ Copied!';btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='📋 Copy';btn.classList.remove('copied')},2000);
+  });
+}
+
+function toggleFav(id){
+  var idx=favs.indexOf(id);
+  if(idx>-1)favs.splice(idx,1);else favs.push(id);
+  s('pl_favs',favs);
+  renderPrompts();
+}
+
+function filterCat(cat){
+  currentCat=cat;
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active')});
+  event.target.classList.add('active');
+  var titles={all:'All Prompts',prd:'PRD & Specs',research:'Research & Analysis',code:'Code & Engineering',writing:'Writing & Comms',meeting:'Meetings & Planning',custom:'My Custom Prompts',faved:'Favorites'};
+  document.getElementById('section-title').textContent=titles[cat]||cat;
+  renderPrompts();
+}
+
+function openModal(){document.getElementById('modal-bg').style.display='flex'}
+function closeModal(e){if(e.target===document.getElementById('modal-bg'))document.getElementById('modal-bg').style.display='none'}
+
+function saveCustom(){
+  var name=document.getElementById('new-name').value.trim();
+  var prompt=document.getElementById('new-prompt').value.trim();
+  if(!name||!prompt){alert('Please fill in name and prompt text');return}
+  var newP={id:'c_'+Date.now(),cat:document.getElementById('new-cat').value,title:name,desc:document.getElementById('new-desc').value||'Custom prompt',text:prompt,custom:true};
+  custom.push(newP);
+  s('pl_custom',custom);
+  s('prompt_count',custom.length);
+  document.getElementById('modal-bg').style.display='none';
+  document.getElementById('new-name').value='';
+  document.getElementById('new-prompt').value='';
+  document.getElementById('new-desc').value='';
+  renderPrompts();
+}
+
+function deleteCustom(id){
+  if(!confirm('Delete this prompt?'))return;
+  custom=custom.filter(function(p){return p.id!==id});
+  s('pl_custom',custom);
+  s('prompt_count',custom.length);
+  renderPrompts();
+}
+
+window.addEventListener('load',renderPrompts);
+</script>
+</body>
+</html>

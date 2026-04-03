@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 5 — Strategy & ROI | AI Course</title>
+<style>
+:root{--bg:#0f1117;--s1:#1a1d2e;--s2:#222638;--bd:#2e3150;--ac:#6c63ff;--g:#00d4aa;--r:#ff6b6b;--y:#f7c948;--tx:#e8eaf6;--mu:#8b90b8;--wh:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+a{color:var(--ac);text-decoration:none}
+.topbar{background:var(--s1);border-bottom:1px solid var(--bd);padding:14px 28px;display:flex;align-items:center;gap:16px}
+.back{color:var(--mu);font-size:13px}
+.back:hover{color:var(--tx)}
+.topbar-title{font-size:16px;font-weight:700;color:var(--wh)}
+.mod-badge{background:rgba(180,170,255,.1);border:1px solid rgba(180,170,255,.3);color:#b4aaff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:auto}
+.container{max-width:860px;margin:0 auto;padding:32px 24px 60px}
+h2{font-size:26px;font-weight:800;color:var(--wh);margin-bottom:8px}
+.hero-desc{color:var(--mu);font-size:15px;margin-bottom:28px}
+.lesson{background:var(--s1);border:1px solid var(--bd);border-radius:14px;margin-bottom:16px;overflow:hidden}
+.lesson-header{padding:18px 20px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.lhc{width:26px;height:26px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:13px}
+.lhc.done{background:var(--g);border-color:var(--g);color:var(--bg)}
+.lh-info{flex:1}
+.lh-title{font-size:16px;font-weight:700;color:var(--wh)}
+.lh-meta{font-size:12px;color:var(--mu);margin-top:2px}
+.lh-time{font-size:12px;color:var(--y);font-weight:600;white-space:nowrap}
+.lesson-body{padding:0 20px 20px;border-top:1px solid var(--bd)}
+.lesson-body p{font-size:14px;color:var(--mu);line-height:1.7;margin:14px 0 10px}
+textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:inherit;font-size:13px;padding:10px 12px;resize:vertical;outline:none;transition:border-color .2s}
+textarea:focus{border-color:var(--ac)}
+textarea::placeholder{color:var(--mu)}
+.save-btn{background:var(--ac);color:white;border:none;padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px}
+.saved-note{font-size:11px;color:var(--g);margin-left:8px;opacity:0;transition:opacity .3s}
+.mark-btn{background:transparent;border:1px solid var(--g);color:var(--g);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:14px;display:inline-block}
+.mark-btn:hover{background:var(--g);color:var(--bg)}
+.mark-btn.done-btn{background:rgba(0,212,170,.1);cursor:default}
+.field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mu);margin-bottom:5px;margin-top:12px}
+input[type=text]{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:inherit;font-size:13px;padding:8px 12px;outline:none;transition:border-color .2s}
+input[type=text]:focus{border-color:var(--ac)}
+input[type=text]::placeholder{color:var(--mu)}
+.res-link{display:inline-flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--bd);color:var(--tx);font-size:12px;font-weight:600;padding:5px 12px;border-radius:8px;text-decoration:none;transition:border-color .2s}
+.res-link:hover{border-color:var(--ac);color:var(--ac)}
+.resource-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.exercise{background:rgba(0,212,170,.04);border:1px solid rgba(0,212,170,.2);border-radius:10px;padding:14px 16px;margin-top:14px}
+.ex-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--g);margin-bottom:6px}
+.ex-desc{font-size:13px;color:var(--mu);margin-bottom:10px;line-height:1.6}
+
+/* AI STRATEGY BUILDER */
+.strategy-section{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:22px;margin-top:24px}
+.ss-title{font-size:18px;font-weight:800;color:var(--wh);margin-bottom:4px}
+.ss-sub{font-size:13px;color:var(--mu);margin-bottom:20px}
+.use-case-card{background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.uc-num{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.uc1{background:rgba(247,201,72,.15);color:var(--y)} .uc2{background:rgba(0,212,170,.15);color:var(--g)} .uc3{background:rgba(108,99,255,.15);color:var(--ac)}
+.uc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+.l1c{color:var(--y)} .l2c{color:var(--g)} .l3c{color:var(--ac)}
+.uc-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.uc-field{flex:1;min-width:180px}
+
+/* EXPORT */
+.export-btn{background:transparent;border:1px solid var(--g);color:var(--g);padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:16px}
+.export-btn:hover{background:var(--g);color:var(--bg)}
+
+/* COMPLETION */
+.completion-card{background:linear-gradient(135deg,rgba(108,99,255,.1),rgba(0,212,170,.05));border:1px solid rgba(108,99,255,.3);border-radius:14px;padding:28px;text-align:center;margin-top:28px}
+.cc-emoji{font-size:48px;margin-bottom:12px}
+.cc-title{font-size:22px;font-weight:800;color:var(--wh);margin-bottom:8px}
+.cc-desc{font-size:14px;color:var(--mu);margin-bottom:20px;max-width:500px;margin-left:auto;margin-right:auto}
+.cc-stats{display:flex;justify-content:center;gap:24px;margin-bottom:20px;flex-wrap:wrap}
+.ccs{text-align:center}
+.ccs-num{font-size:28px;font-weight:800;color:var(--g)}
+.ccs-label{font-size:12px;color:var(--mu)}
+.cc-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.cc-link{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer}
+.cc-link.primary{background:var(--ac);color:white}
+.cc-link.sec{border:1px solid var(--bd);color:var(--mu)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="topbar-title">Module 5 — Measure ROI &amp; Scale</div>
+  <div class="mod-badge">Week 6 · ~4 hrs</div>
+</div>
+
+<div class="container">
+  <h2>Measure ROI &amp; Build Your AI Strategy</h2>
+  <p class="hero-desc">Quantify the value you've created, build a business case for more investment, and design a portfolio of 3 use cases for compounding returns.</p>
+
+  <!-- LESSON 1 -->
+  <div class="lesson" id="l1">
+    <div class="lesson-header" onclick="toggleLesson('l1')">
+      <div class="lhc" id="l1-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 5.1 — Review and Measure Your Results</div>
+        <div class="lh-meta">Only what gets measured gets improved</div>
+      </div>
+      <div class="lh-time">60 min</div>
+    </div>
+    <div class="lesson-body" id="l1-body" style="display:none">
+      <p>Open the ROI Tracker and review all entries from the past 5 weeks. Calculate your total time saved, your average per-task reduction, and identify your top-performing use case. The teams that can show specific numbers get more AI budget; the teams that can't are guessing.</p>
+      <div class="resource-row">
+        <a class="res-link" href="roi-tracker.html" target="_blank">📊 Open ROI Tracker</a>
+        <a class="res-link" href="https://www.ibm.com/think/insights/ai-roi" target="_blank">📖 IBM: How to Maximize AI ROI 2026</a>
+      </div>
+      <div class="exercise">
+        <div class="ex-label">✏️ Exercise — Your 6-Week ROI Summary</div>
+        <div class="ex-desc">Pull your numbers from the ROI Tracker and answer these questions:</div>
+        <textarea id="l1-notes" rows="8" placeholder="Total hours saved over 6 weeks:&#10;Avg hours saved per week:&#10;Top performing use case (task + % time saved):&#10;Use case that underperformed (what went wrong?):&#10;Quality of AI output (1-10 scale):&#10;Unexpected benefits I didn't anticipate:&#10;What I would have done differently from week 1:"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l1')">Save</button><span class="saved-note" id="l1-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l1-mark" onclick="markDone(1)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 2 -->
+  <div class="lesson" id="l2">
+    <div class="lesson-header" onclick="toggleLesson('l2')">
+      <div class="lhc" id="l2-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 5.2 — Build Your Business Case</div>
+        <div class="lh-meta">Translate time savings into dollars and strategic value</div>
+      </div>
+      <div class="lh-time">60 min</div>
+    </div>
+    <div class="lesson-body" id="l2-body" style="display:none">
+      <p>Frame your results in business terms that leadership cares about. For product and engineering: time saved = faster shipping velocity, fewer bugs, more thorough research before decisions. Use the Thomson Reuters framework: at 3+ use cases in production you should be targeting 160% ROI.</p>
+      <div class="exercise">
+        <div class="ex-label">✏️ Exercise — Business Case Framework</div>
+        <div class="ex-desc">Fill in this business case using your 6-week results:</div>
+        <textarea id="l2-notes" rows="12" placeholder="BUSINESS CASE FOR AI INVESTMENT&#10;&#10;Current state:&#10;- Hours spent on [top 3 tasks] per week: ___&#10;- Cost of that time (hrs × hourly rate): $___&#10;&#10;With AI (based on 6-week pilot):&#10;- Hours saved per week: ___&#10;- Annual time savings: ___ hrs&#10;- Annual cost savings: $___&#10;- First-year ROI: ___% (savings ÷ tool cost)&#10;&#10;Strategic value (beyond cost savings):&#10;- [e.g. Faster PRD cycles = faster product shipping]&#10;- [e.g. Better research = fewer wrong bets]&#10;&#10;Ask: [Budget / tool / team training requested]&#10;Next 90 days: [What I'd implement with approval]"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l2')">Save</button><span class="saved-note" id="l2-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l2-mark" onclick="markDone(2)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 3 -->
+  <div class="lesson" id="l3">
+    <div class="lesson-header" onclick="toggleLesson('l3')">
+      <div class="lhc" id="l3-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 5.3 — Governance, Safety &amp; Staying Current</div>
+        <div class="lh-meta">Gartner: 40% of agentic AI projects fail due to poor governance, not bad tech</div>
+      </div>
+      <div class="lh-time">45 min</div>
+    </div>
+    <div class="lesson-body" id="l3-body" style="display:none">
+      <p>Before you scale, make sure you've thought through: data privacy (no PII in public AI tools), accuracy requirements (what's acceptable error rate per use case?), and what stays human. A good governance framework isn't bureaucracy — it's what lets you scale confidently without surprises.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://www.anthropic.com/usage-policy" target="_blank">📖 Anthropic Usage Policy</a>
+        <a class="res-link" href="https://www.ibm.com/impact/ai-ethics" target="_blank">📖 IBM AI Ethics principles</a>
+      </div>
+      <div class="exercise">
+        <div class="ex-label">✏️ Exercise — Your AI Governance Rules</div>
+        <div class="ex-desc">Write your personal (or team's) AI governance policy. Keep it to 5–7 rules maximum:</div>
+        <textarea id="l3-notes" rows="8" placeholder="MY AI GOVERNANCE RULES&#10;&#10;1. NEVER send [types of data] to public AI tools without [safeguard]&#10;2. Always review AI output before [sending to customer / posting publicly / committing to codebase]&#10;3. For high-stakes decisions [e.g. architectural], AI is input, not decision-maker&#10;4. Measure accuracy of each use case — acceptable error rate is [X%] for [low-stakes] and [Y%] for [high-stakes]&#10;5. Disclose AI assistance when [circumstances]&#10;6. Approved tools for work use: [list]&#10;7. Escalate to [person/team] when [uncertainty]"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l3')">Save</button><span class="saved-note" id="l3-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l3-mark" onclick="markDone(3)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 4 -->
+  <div class="lesson" id="l4">
+    <div class="lesson-header" onclick="toggleLesson('l4')">
+      <div class="lhc" id="l4-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 5.4 — Design Your 3-Use-Case Portfolio</div>
+        <div class="lh-meta">3+ use cases = 160% ROI · 1 use case = 40% ROI</div>
+      </div>
+      <div class="lh-time">60 min</div>
+    </div>
+    <div class="lesson-body" id="l4-body" style="display:none">
+      <p>The research is decisive: firms running 3+ AI use cases in production simultaneously achieve 4× the ROI of those running just one. Design your portfolio to cover: (1) a fast-payback use case, (2) a high-impact use case, and (3) a long-term value use case. Use the builder below.</p>
+      <button class="mark-btn" id="l4-mark" onclick="markDone(4)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- AI STRATEGY BUILDER -->
+  <div class="strategy-section">
+    <div class="ss-title">🚀 Your 90-Day AI Strategy</div>
+    <div class="ss-sub">Build your 3-use-case portfolio. This is your capstone deliverable — your implementation plan going forward.</div>
+
+    <div class="field-label" style="margin-top:0">Your name / role</div>
+    <input type="text" id="s-name" placeholder="e.g. Min — Product Manager at [Company]" oninput="autoSave()">
+
+    <!-- USE CASE 1 -->
+    <div class="use-case-card" style="margin-top:16px">
+      <div class="uc-num uc1">1</div>
+      <div class="uc-label l1c">Use Case 1 — Fast Payback (target: &lt;3 months)</div>
+      <div class="field-label" style="margin-top:0">Use case name</div>
+      <input type="text" id="uc1-name" placeholder="e.g. PRD drafting from user research" oninput="autoSave()">
+      <div class="uc-row">
+        <div class="uc-field"><div class="field-label">Tool to use</div><input type="text" id="uc1-tool" placeholder="e.g. Claude Projects + Prompt Library" oninput="autoSave()"></div>
+        <div class="uc-field"><div class="field-label">Expected time saved/week</div><input type="text" id="uc1-time" placeholder="e.g. 2 hours/week" oninput="autoSave()"></div>
+      </div>
+      <div class="field-label">Start date / milestone</div>
+      <input type="text" id="uc1-start" placeholder="e.g. Start Week 7 — already piloted, ready to scale" oninput="autoSave()">
+    </div>
+
+    <!-- USE CASE 2 -->
+    <div class="use-case-card">
+      <div class="uc-num uc2">2</div>
+      <div class="uc-label l2c">Use Case 2 — High Impact (target: 3–6 months)</div>
+      <div class="field-label" style="margin-top:0">Use case name</div>
+      <input type="text" id="uc2-name" placeholder="e.g. Automated competitive intelligence report" oninput="autoSave()">
+      <div class="uc-row">
+        <div class="uc-field"><div class="field-label">Tool to use</div><input type="text" id="uc2-tool" placeholder="e.g. n8n + Perplexity API + Slack" oninput="autoSave()"></div>
+        <div class="uc-field"><div class="field-label">Expected time saved/week</div><input type="text" id="uc2-time" placeholder="e.g. 3 hours/week across team" oninput="autoSave()"></div>
+      </div>
+      <div class="field-label">Start date / milestone</div>
+      <input type="text" id="uc2-start" placeholder="e.g. Build in Week 8, launch Week 9" oninput="autoSave()">
+    </div>
+
+    <!-- USE CASE 3 -->
+    <div class="use-case-card">
+      <div class="uc-num uc3">3</div>
+      <div class="uc-label l3c">Use Case 3 — Long-Term Value (target: 6–12 months)</div>
+      <div class="field-label" style="margin-top:0">Use case name</div>
+      <input type="text" id="uc3-name" placeholder="e.g. Engineering knowledge base + AI search" oninput="autoSave()">
+      <div class="uc-row">
+        <div class="uc-field"><div class="field-label">Tool to use</div><input type="text" id="uc3-tool" placeholder="e.g. NotebookLM + internal docs + Claude API" oninput="autoSave()"></div>
+        <div class="uc-field"><div class="field-label">Expected time saved/week</div><input type="text" id="uc3-time" placeholder="e.g. 5 hours/week once fully adopted" oninput="autoSave()"></div>
+      </div>
+      <div class="field-label">Start date / milestone</div>
+      <input type="text" id="uc3-start" placeholder="e.g. Research in Weeks 9–10, pilot in Week 11" oninput="autoSave()">
+    </div>
+
+    <div class="field-label">Your 90-day north star (what does success look like?)</div>
+    <textarea id="s-northstar" rows="3" oninput="autoSave()" placeholder="e.g. By Day 90: all 3 use cases running, saving 10+ hours/week across my workflow, with clear ROI data to present to leadership for expanded AI investment."></textarea>
+
+    <div class="field-label">What you'll stop doing manually (to make room for higher-value work)</div>
+    <textarea id="s-stop" rows="2" oninput="autoSave()" placeholder="e.g. Stop: manual competitor research. Stop: writing release notes from scratch. Spend reclaimed time on: user interviews, strategic thinking, system design."></textarea>
+
+    <button class="export-btn" onclick="exportStrategy()">⬇️ Export Strategy Brief</button>
+  </div>
+
+  <!-- COMPLETION -->
+  <div class="completion-card" id="completion-card" style="display:none">
+    <div class="cc-emoji">🎓</div>
+    <div class="cc-title">Course Complete!</div>
+    <div class="cc-desc">You've built the same deliverables as the Harvard HDSR Agentic AI Intensive — at zero cost and on your own schedule. You now have an implementation-ready AI strategy.</div>
+    <div class="cc-stats">
+      <div class="ccs"><div class="ccs-num" id="final-hrs">—</div><div class="ccs-label">Hours saved</div></div>
+      <div class="ccs"><div class="ccs-num">3</div><div class="ccs-label">Use cases designed</div></div>
+      <div class="ccs"><div class="ccs-num" id="final-prompts">—</div><div class="ccs-label">Prompts saved</div></div>
+    </div>
+    <div class="cc-links">
+      <a class="cc-link primary" href="roi-tracker.html">View ROI Summary</a>
+      <a class="cc-link sec" href="prompt-library.html">Prompt Library</a>
+      <a class="cc-link sec" href="index.html">Dashboard</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function sv(k,v){try{localStorage.setItem('aicourse_'+k,JSON.stringify(v))}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem('aicourse_'+k);return v!==null?JSON.parse(v):d}catch(e){return d}}
+function toggleLesson(id){var b=document.getElementById(id+'-body');b.style.display=b.style.display==='none'?'block':'none'}
+function markDone(n){
+  var id='l'+n;var done=ld('m5_lessons',{});done[id]=true;sv('m5_lessons',done);
+  document.getElementById(id+'-check').classList.add('done');
+  var m=document.getElementById(id+'-mark');m.textContent='✓ Completed';m.classList.add('done-btn');
+  sv('m5_done',Object.keys(done).length);
+  checkCompletion();
+}
+function saveNote(id){sv('m5_note_'+id,document.getElementById(id+'-notes').value);var s=document.getElementById(id+'-saved');s.style.opacity=1;setTimeout(function(){s.style.opacity=0},2000)}
+var strategyFields=['s-name','uc1-name','uc1-tool','uc1-time','uc1-start','uc2-name','uc2-tool','uc2-time','uc2-start','uc3-name','uc3-tool','uc3-time','uc3-start','s-northstar','s-stop'];
+function autoSave(){
+  var data={};
+  strategyFields.forEach(function(f){var el=document.getElementById(f);if(el)data[f]=el.value});
+  sv('m5_strategy',data);
+  checkCompletion();
+}
+function checkCompletion(){
+  var done=ld('m5_lessons',{});
+  if(Object.keys(done).length>=4){
+    document.getElementById('completion-card').style.display='block';
+    document.getElementById('final-hrs').textContent=ld('total_hrs_saved','0')+'h';
+    document.getElementById('final-prompts').textContent=ld('prompt_count',0);
+    document.getElementById('completion-card').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+function exportStrategy(){
+  var data=ld('m5_strategy',{});
+  var lines=[
+    'MY AI STRATEGY — 90 DAY PLAN',
+    (data['s-name']||''), '',
+    '━━━━ USE CASE 1 (Fast Payback) ━━━━',
+    'Use case: '+(data['uc1-name']||''),
+    'Tool: '+(data['uc1-tool']||''),
+    'Time saved: '+(data['uc1-time']||''),
+    'Start: '+(data['uc1-start']||''), '',
+    '━━━━ USE CASE 2 (High Impact) ━━━━',
+    'Use case: '+(data['uc2-name']||''),
+    'Tool: '+(data['uc2-tool']||''),
+    'Time saved: '+(data['uc2-time']||''),
+    'Start: '+(data['uc2-start']||''), '',
+    '━━━━ USE CASE 3 (Long-Term Value) ━━━━',
+    'Use case: '+(data['uc3-name']||''),
+    'Tool: '+(data['uc3-tool']||''),
+    'Time saved: '+(data['uc3-time']||''),
+    'Start: '+(data['uc3-start']||''), '',
+    '━━━━ NORTH STAR ━━━━',
+    (data['s-northstar']||''), '',
+    '━━━━ WHAT I WILL STOP DOING MANUALLY ━━━━',
+    (data['s-stop']||''), '',
+    'Generated: '+new Date().toLocaleDateString()
+  ];
+  var blob=new Blob([lines.join('\n')],{type:'text/plain'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='AI_Strategy_90Day.txt';
+  a.click();
+}
+window.addEventListener('load',function(){
+  var done=ld('m5_lessons',{});
+  ['l1','l2','l3','l4'].forEach(function(id){if(done[id]){document.getElementById(id+'-check').classList.add('done');document.getElementById(id+'-mark').textContent='✓ Completed';document.getElementById(id+'-mark').classList.add('done-btn')}});
+  ['l1','l2','l3','l4'].forEach(function(id){var v=ld('m5_note_'+id,'');if(v&&document.getElementById(id+'-notes'))document.getElementById(id+'-notes').value=v});
+  var strat=ld('m5_strategy',{});
+  strategyFields.forEach(function(f){var el=document.getElementById(f);if(el&&strat[f])el.value=strat[f]});
+  var opened=false;
+  ['l1','l2','l3','l4'].forEach(function(id){if(!done[id]&&!opened){toggleLesson(id);opened=true}});
+  checkCompletion();
+});
+</script>
+</body>
+</html>

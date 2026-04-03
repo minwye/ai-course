@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 2 — Quick Wins | AI Course</title>
+<style>
+:root{--bg:#0f1117;--s1:#1a1d2e;--s2:#222638;--bd:#2e3150;--ac:#6c63ff;--g:#00d4aa;--r:#ff6b6b;--y:#f7c948;--tx:#e8eaf6;--mu:#8b90b8;--wh:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+a{color:var(--ac);text-decoration:none}
+.topbar{background:var(--s1);border-bottom:1px solid var(--bd);padding:14px 28px;display:flex;align-items:center;gap:16px}
+.back{color:var(--mu);font-size:13px}
+.back:hover{color:var(--tx)}
+.topbar-title{font-size:16px;font-weight:700;color:var(--wh)}
+.mod-badge{background:rgba(0,212,170,.12);border:1px solid rgba(0,212,170,.3);color:var(--g);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:auto}
+.container{max-width:860px;margin:0 auto;padding:32px 24px 60px}
+h2{font-size:26px;font-weight:800;color:var(--wh);margin-bottom:8px}
+.hero-desc{color:var(--mu);font-size:15px;margin-bottom:28px}
+
+/* ROI BADGES */
+.roi-strip{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.roi-pill{display:flex;align-items:center;gap:8px;background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:10px 16px}
+.rp-num{font-size:20px;font-weight:800;color:var(--g)}
+.rp-label{font-size:12px;color:var(--mu)}
+
+/* LESSONS */
+.lesson{background:var(--s1);border:1px solid var(--bd);border-radius:14px;margin-bottom:16px;overflow:hidden}
+.lesson-header{padding:18px 20px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.lhc{width:26px;height:26px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:13px}
+.lhc.done{background:var(--g);border-color:var(--g);color:var(--bg)}
+.lh-info{flex:1}
+.lh-title{font-size:16px;font-weight:700;color:var(--wh)}
+.lh-meta{font-size:12px;color:var(--mu);margin-top:2px}
+.lh-time{font-size:12px;color:var(--y);font-weight:600;white-space:nowrap}
+.lesson-body{padding:0 20px 20px;border-top:1px solid var(--bd)}
+.lesson-body p{font-size:14px;color:var(--mu);line-height:1.7;margin:14px 0 10px}
+.resource-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.res-link{display:inline-flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--bd);color:var(--tx);font-size:12px;font-weight:600;padding:5px 12px;border-radius:8px;text-decoration:none;transition:border-color .2s}
+.res-link:hover{border-color:var(--ac);color:var(--ac)}
+.exercise{background:rgba(0,212,170,.04);border:1px solid rgba(0,212,170,.2);border-radius:10px;padding:14px 16px;margin-top:14px}
+.ex-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--g);margin-bottom:6px}
+.ex-desc{font-size:13px;color:var(--mu);margin-bottom:10px;line-height:1.6}
+textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:inherit;font-size:13px;padding:10px 12px;resize:vertical;outline:none;transition:border-color .2s}
+textarea:focus{border-color:var(--ac)}
+textarea::placeholder{color:var(--mu)}
+.save-btn{background:var(--ac);color:white;border:none;padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px}
+.save-btn:hover{opacity:.85}
+.saved-note{font-size:11px;color:var(--g);margin-left:8px;opacity:0;transition:opacity .3s}
+.mark-btn{background:transparent;border:1px solid var(--g);color:var(--g);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:14px;display:inline-block}
+.mark-btn:hover{background:var(--g);color:var(--bg)}
+.mark-btn.done-btn{background:rgba(0,212,170,.1);cursor:default}
+
+/* PROMPT BUILDER */
+.prompt-builder{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-top:14px}
+.pb-title{font-size:13px;font-weight:700;color:var(--wh);margin-bottom:10px}
+.pb-output{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:12px;font-size:12px;color:#c5c8e0;font-family:monospace;white-space:pre-wrap;min-height:80px;margin-top:10px}
+.pb-row{display:flex;gap:8px;margin-bottom:8px;align-items:center;flex-wrap:wrap}
+.pb-label{font-size:12px;color:var(--mu);width:100px;flex-shrink:0}
+input[type=text]{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:6px;color:var(--tx);font-family:inherit;font-size:13px;padding:7px 10px;outline:none;transition:border-color .2s}
+input[type=text]:focus{border-color:var(--ac)}
+input[type=text]::placeholder{color:var(--mu)}
+.copy-btn{background:transparent;border:1px solid var(--bd);color:var(--mu);font-size:12px;font-weight:600;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .2s;margin-top:8px}
+.copy-btn:hover{border-color:var(--g);color:var(--g)}
+
+/* CHECKLIST */
+.checklist{list-style:none;display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.checklist li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--tx)}
+.ck{width:20px;height:20px;border-radius:4px;border:2px solid var(--bd);flex-shrink:0;cursor:pointer;margin-top:1px;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:11px}
+.ck.done{background:var(--g);border-color:var(--g);color:var(--bg)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="topbar-title">Module 2 — Quick Wins</div>
+  <div class="mod-badge">Week 2 · ~5 hrs</div>
+</div>
+
+<div class="container">
+  <h2>Quick Wins — The Fastest-Payback Use Cases</h2>
+  <p class="hero-desc">Deploy AI on the three use cases with the fastest ROI for product and engineering work. Start generating value this week.</p>
+
+  <div class="roi-strip">
+    <div class="roi-pill"><div class="rp-num">400%</div><div class="rp-label">First-year ROI<br>Document Analysis</div></div>
+    <div class="roi-pill"><div class="rp-num">50%</div><div class="rp-label">Time saved<br>Research Synthesis</div></div>
+    <div class="roi-pill"><div class="rp-num">11h</div><div class="rp-label">Saved per week<br>Writing & Content</div></div>
+    <div class="roi-pill"><div class="rp-num">80%</div><div class="rp-label">Time saved<br>Meeting Notes</div></div>
+  </div>
+
+  <!-- LESSON 1 -->
+  <div class="lesson" id="l1">
+    <div class="lesson-header" onclick="toggleLesson('l1')">
+      <div class="lhc" id="l1-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 2.1 — Document Analysis &amp; Summarization</div>
+        <div class="lh-meta">400% first-year ROI · 2–4 month payback · Fastest win</div>
+      </div>
+      <div class="lh-time">90 min</div>
+    </div>
+    <div class="lesson-body" id="l1-body" style="display:none">
+      <p>For product and engineering, this means: uploading PRDs, user research reports, competitive analyses, architecture docs, and RFC drafts — then having AI extract the key decisions, gaps, risks, and action items. The highest-value version is multi-document synthesis: giving AI 5+ documents and asking it to reconcile or compare them.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://claude.ai" target="_blank">⚡ Claude.ai — best for document analysis</a>
+        <a class="res-link" href="https://notebooklm.google.com" target="_blank">📓 NotebookLM — multiple docs, great for research</a>
+      </div>
+
+      <div class="prompt-builder">
+        <div class="pb-title">🛠 Document Analysis Prompt Builder</div>
+        <div class="pb-row"><div class="pb-label">Document type:</div><input type="text" id="doc-type" placeholder="e.g. PRD, user research report, RFC" oninput="buildDocPrompt()"></div>
+        <div class="pb-row"><div class="pb-label">What you want:</div><input type="text" id="doc-want" placeholder="e.g. key decisions, risks, action items, gaps" oninput="buildDocPrompt()"></div>
+        <div class="pb-row"><div class="pb-label">Audience:</div><input type="text" id="doc-audience" placeholder="e.g. engineering team, stakeholders, yourself" oninput="buildDocPrompt()"></div>
+        <div class="pb-output" id="doc-prompt">Fill in the fields above to generate your prompt →</div>
+        <button class="copy-btn" onclick="copyText('doc-prompt')">📋 Copy Prompt</button>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-label">✏️ This Week's Exercise</div>
+        <div class="ex-desc">Take 2–3 real documents from your current work (PRDs, research notes, architecture docs). Run them through Claude or NotebookLM. Time yourself vs. doing it manually. Log the result in the ROI Tracker.</div>
+        <textarea id="l1-notes" rows="4" placeholder="What documents I analyzed:&#10;Time before AI:&#10;Time after AI:&#10;What I'll do differently next time:"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l1')">Save</button><span class="saved-note" id="l1-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l1-mark" onclick="markDone(1)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 2 -->
+  <div class="lesson" id="l2">
+    <div class="lesson-header" onclick="toggleLesson('l2')">
+      <div class="lhc" id="l2-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 2.2 — Research Synthesis &amp; Competitive Intelligence</div>
+        <div class="lh-meta">50% time saved · Cuts analyst research time in half</div>
+      </div>
+      <div class="lh-time">90 min</div>
+    </div>
+    <div class="lesson-body" id="l2-body" style="display:none">
+      <p>For product and engineering: competitor research, technology evaluation (which framework should we use?), market trend synthesis, and literature review before making architectural decisions. The highest-value pattern is structured research with a specific output format — not open-ended browsing.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://www.perplexity.ai" target="_blank">🔍 Perplexity Pro — cited research</a>
+        <a class="res-link" href="https://claude.ai" target="_blank">⚡ Claude with web search</a>
+        <a class="res-link" href="https://notebooklm.google.com" target="_blank">📓 NotebookLM — internal docs + research</a>
+      </div>
+
+      <div class="prompt-builder">
+        <div class="pb-title">🛠 Research Synthesis Prompt Builder</div>
+        <div class="pb-row"><div class="pb-label">Research topic:</div><input type="text" id="res-topic" placeholder="e.g. React vs Vue for our new frontend" oninput="buildResPrompt()"></div>
+        <div class="pb-row"><div class="pb-label">Decision to make:</div><input type="text" id="res-decision" placeholder="e.g. which framework to adopt" oninput="buildResPrompt()"></div>
+        <div class="pb-row"><div class="pb-label">Your constraints:</div><input type="text" id="res-constraints" placeholder="e.g. team knows React, need TypeScript support" oninput="buildResPrompt()"></div>
+        <div class="pb-output" id="res-prompt">Fill in the fields above →</div>
+        <button class="copy-btn" onclick="copyText('res-prompt')">📋 Copy Prompt</button>
+      </div>
+
+      <div class="exercise">
+        <div class="ex-label">✏️ This Week's Exercise</div>
+        <div class="ex-desc">Pick one research question you've been putting off (competitor comparison, tech evaluation, market sizing). Use Perplexity Pro or Claude with web search to produce a structured research brief. Time it. Log in ROI Tracker.</div>
+        <textarea id="l2-notes" rows="4" placeholder="Research question I chose:&#10;Tool I used:&#10;Time taken:&#10;Quality vs. doing it myself:&#10;Will use again for:"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l2')">Save</button><span class="saved-note" id="l2-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l2-mark" onclick="markDone(2)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 3 -->
+  <div class="lesson" id="l3">
+    <div class="lesson-header" onclick="toggleLesson('l3')">
+      <div class="lhc" id="l3-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 2.3 — Writing, PRDs &amp; Technical Communication</div>
+        <div class="lh-meta">11.4 hours saved per week on average · Immediate payback</div>
+      </div>
+      <div class="lh-time">60 min</div>
+    </div>
+    <div class="lesson-body" id="l3-body" style="display:none">
+      <p>The highest-value writing use cases for product/engineering: PRD drafts from research notes, release notes from commits, RFC first drafts, status updates, and technical blog posts. The key technique is "bones then flesh" — generate structure first, then fill each section. Don't ask AI to write everything from scratch with no context.</p>
+      <p>Open the <a href="prompt-library.html" target="_blank">Prompt Library</a> now — it has ready-to-use templates for every writing task listed above.</p>
+
+      <div class="exercise">
+        <div class="ex-label">✏️ This Week's Exercise — Build Your Reusable Prompt Template</div>
+        <div class="ex-desc">Pick your most common writing task (PRD section, release notes, status update). Write and test a prompt template that works for you. Save it in the Prompt Library. Use it 3+ times this week.</div>
+        <textarea id="l3-notes" rows="6" placeholder="My most common writing task:&#10;&#10;My prompt template (include [VARIABLES] in brackets):&#10;&#10;What I had to edit/fix in the output:&#10;&#10;Time saved vs. writing from scratch:"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l3')">Save</button><span class="saved-note" id="l3-saved">Saved ✓</span></div>
+      </div>
+
+      <ul class="checklist">
+        <li><div class="ck" id="ck1" onclick="toggleCk(1)">✓</div>Opened Prompt Library and reviewed PRD & Spec prompts</li>
+        <li><div class="ck" id="ck2" onclick="toggleCk(2)">✓</div>Used "PRD from User Research" prompt on real research notes</li>
+        <li><div class="ck" id="ck3" onclick="toggleCk(3)">✓</div>Used "Release Notes Writer" or "Status Update Writer" prompt</li>
+        <li><div class="ck" id="ck4" onclick="toggleCk(4)">✓</div>Saved at least one custom prompt to the library</li>
+      </ul>
+      <button class="mark-btn" id="l3-mark" onclick="markDone(3)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 4 -->
+  <div class="lesson" id="l4">
+    <div class="lesson-header" onclick="toggleLesson('l4')">
+      <div class="lhc" id="l4-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 2.4 — Meeting Intelligence (Bonus Quick Win)</div>
+        <div class="lh-meta">80% time reduction · 2–3 hours saved per week</div>
+      </div>
+      <div class="lh-time">30 min</div>
+    </div>
+    <div class="lesson-body" id="l4-body" style="display:none">
+      <p>This is the single fastest win for most knowledge workers. Set up Fathom (free), Otter.ai, or Fireflies to auto-record, transcribe, and extract action items from every meeting. For standup and sprint planning notes specifically, use the structured extraction prompt below.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://fathom.video" target="_blank">🎙 Fathom — Free, excellent quality</a>
+        <a class="res-link" href="https://otter.ai" target="_blank">🎙 Otter.ai — Free tier available</a>
+        <a class="res-link" href="https://fireflies.ai" target="_blank">🎙 Fireflies.ai — Integrates with Jira</a>
+      </div>
+      <div class="exercise">
+        <div class="ex-label">✏️ Setup Exercise</div>
+        <div class="ex-desc">Install Fathom (free) and connect it to your calendar. Use it for your next 3 meetings. For each meeting, see how long the summary takes vs. your manual notes. If you paste a transcript into Claude, use this prompt:</div>
+        <div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;font-size:12px;color:#c5c8e0;font-family:monospace;white-space:pre-wrap;margin-top:8px">You are an expert meeting facilitator. Given this transcript, extract:
+1. Decisions made (numbered, clear owner if stated)
+2. Action items (Owner | Action | Due date)
+3. Key discussion points (3–5 bullets)
+4. Open questions / parking lot
+5. Next steps
+
+Be concise. Flag anything unclear with [UNCLEAR].</div>
+        <button class="copy-btn" style="margin-top:8px;background:transparent;border:1px solid var(--bd);color:var(--mu);font-size:12px;font-weight:600;padding:5px 12px;border-radius:6px;cursor:pointer" onclick="navigator.clipboard.writeText(document.querySelector('.lesson-body .font-family\\:monospace')?.textContent||'')">📋 Copy</button>
+        <textarea id="l4-notes" rows="3" style="margin-top:10px" placeholder="Meeting tool I chose:&#10;Time it took to set up:&#10;First meeting summary quality (1-5 and notes):"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l4')">Save</button><span class="saved-note" id="l4-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l4-mark" onclick="markDone(4)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- WEEK 2 RECAP -->
+  <div style="background:rgba(0,212,170,.05);border:1px solid rgba(0,212,170,.2);border-radius:14px;padding:20px;margin-top:8px">
+    <div style="font-size:15px;font-weight:700;color:var(--wh);margin-bottom:8px">📋 Week 2 Completion Checklist</div>
+    <ul class="checklist">
+      <li><div class="ck" id="ck5" onclick="toggleCk(5)">✓</div>Analyzed 2+ real documents with AI and logged time saved in ROI Tracker</li>
+      <li><div class="ck" id="ck6" onclick="toggleCk(6)">✓</div>Ran at least one research synthesis on a real question (competitor, tech, market)</li>
+      <li><div class="ck" id="ck7" onclick="toggleCk(7)">✓</div>Built and used a prompt template for your most common writing task</li>
+      <li><div class="ck" id="ck8" onclick="toggleCk(8)">✓</div>Set up a meeting AI tool and used it for at least 1 meeting</li>
+      <li><div class="ck" id="ck9" onclick="toggleCk(9)">✓</div>Added at least 3 entries to the ROI Tracker with before/after times</li>
+    </ul>
+    <div style="margin-top:14px;font-size:13px;color:var(--mu)">You've now completed the two fastest-payback use cases. Ready for Module 3 (Agentic AI) → <a href="module-3-agent-framework.html" style="color:var(--ac);font-weight:600">Module 3 →</a></div>
+  </div>
+</div>
+
+<script>
+function sv(k,v){try{localStorage.setItem('aicourse_'+k,JSON.stringify(v))}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem('aicourse_'+k);return v!==null?JSON.parse(v):d}catch(e){return d}}
+function toggleLesson(id){var b=document.getElementById(id+'-body');b.style.display=b.style.display==='none'?'block':'none'}
+function markDone(n){var id='l'+n;var done=ld('m2_lessons',{});done[id]=true;sv('m2_lessons',done);document.getElementById(id+'-check').classList.add('done');var m=document.getElementById(id+'-mark');m.textContent='✓ Completed';m.classList.add('done-btn');sv('m2_done',Object.keys(done).length)}
+function saveNote(id){sv('m2_note_'+id,document.getElementById(id+'-notes').value);var s=document.getElementById(id+'-saved');s.style.opacity=1;setTimeout(function(){s.style.opacity=0},2000)}
+var cks=ld('m2_cks',{});
+function toggleCk(n){cks[n]=!cks[n];sv('m2_cks',cks);document.getElementById('ck'+n).classList.toggle('done',cks[n])}
+function copyText(id){var el=document.getElementById(id);navigator.clipboard.writeText(el.textContent).then(function(){el.style.borderColor='var(--g)';setTimeout(function(){el.style.borderColor='var(--bd)'},2000)})}
+
+function buildDocPrompt(){
+  var dt=document.getElementById('doc-type').value||'[document type]';
+  var dw=document.getElementById('doc-want').value||'key points, risks, and action items';
+  var da=document.getElementById('doc-audience').value||'me';
+  document.getElementById('doc-prompt').textContent='You are a senior '+dt+' analyst.\n\nI\'m going to share a '+dt+' with you. Please analyze it and produce the following for '+da+':\n\n'+dw.split(',').map(function(s,i){return (i+1)+'. '+s.trim()}).join('\n')+'\n\nBe concise and actionable. Flag anything that is unclear or missing with [NEEDS CLARIFICATION].';
+}
+function buildResPrompt(){
+  var rt=document.getElementById('res-topic').value||'[topic]';
+  var rd=document.getElementById('res-decision').value||'[decision]';
+  var rc=document.getElementById('res-constraints').value||'[constraints]';
+  document.getElementById('res-prompt').textContent='You are a research analyst. Help me make a decision about: '+rd+'.\n\nResearch topic: '+rt+'\nOur constraints: '+rc+'\n\nPlease provide:\n1. Overview of the landscape (key facts, with sources)\n2. Top 3 options, each with: pros, cons, cost/effort, and fit with our constraints\n3. Comparison table\n4. Recommendation with confidence level\n5. Open questions we should answer before deciding\n6. What to do in the next 30 days to move forward';
+}
+
+window.addEventListener('load',function(){
+  var done=ld('m2_lessons',{});
+  ['l1','l2','l3','l4'].forEach(function(id){if(done[id]){document.getElementById(id+'-check').classList.add('done');document.getElementById(id+'-mark').textContent='✓ Completed';document.getElementById(id+'-mark').classList.add('done-btn')}});
+  Object.keys(cks).forEach(function(k){if(cks[k])document.getElementById('ck'+k).classList.add('done')});
+  ['l1','l2','l3','l4'].forEach(function(id){var v=ld('m2_note_'+id,'');if(v&&document.getElementById(id+'-notes'))document.getElementById(id+'-notes').value=v});
+  // Auto-open first incomplete
+  var opened=false;
+  ['l1','l2','l3','l4'].forEach(function(id){if(!done[id]&&!opened){toggleLesson(id);opened=true}});
+});
+</script>
+</body>
+</html>

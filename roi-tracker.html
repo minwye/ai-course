@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ROI Tracker — AI Course</title>
+<style>
+:root{--bg:#0f1117;--s1:#1a1d2e;--s2:#222638;--bd:#2e3150;--ac:#6c63ff;--g:#00d4aa;--r:#ff6b6b;--y:#f7c948;--tx:#e8eaf6;--mu:#8b90b8;--wh:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+.topbar{background:var(--s1);border-bottom:1px solid var(--bd);padding:14px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.back{color:var(--mu);font-size:13px;text-decoration:none}
+.back:hover{color:var(--tx)}
+.topbar-title{font-size:16px;font-weight:700;color:var(--wh)}
+.container{max-width:900px;margin:0 auto;padding:28px 24px 60px}
+h2{font-size:24px;font-weight:800;color:var(--wh);margin-bottom:6px}
+.hero-desc{color:var(--mu);font-size:14px;margin-bottom:28px}
+
+/* SUMMARY CARDS */
+.summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:32px}
+.sum-card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center}
+.sum-num{font-size:28px;font-weight:800}
+.sum-num.green{color:var(--g)} .sum-num.yellow{color:var(--y)} .sum-num.blue{color:var(--ac)} .sum-num.red{color:var(--r)}
+.sum-label{font-size:12px;color:var(--mu);margin-top:4px}
+
+/* ADD TASK */
+.add-section{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:24px}
+.add-title{font-size:15px;font-weight:700;color:var(--wh);margin-bottom:14px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mu);margin-bottom:5px}
+input[type=text],input[type=number],select,textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:inherit;font-size:13px;padding:8px 12px;outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--ac)}
+input::placeholder,textarea::placeholder{color:var(--mu)}
+select{cursor:pointer}
+.form-row{display:flex;flex-direction:column;gap:4px}
+.form-full{grid-column:1/-1}
+.add-btn{background:var(--ac);color:white;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px}
+.add-btn:hover{opacity:.85}
+
+/* LOG TABLE */
+.log-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.log-title{font-size:18px;font-weight:800;color:var(--wh)}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap}
+.filter-btn{background:transparent;border:1px solid var(--bd);color:var(--mu);font-size:12px;padding:4px 12px;border-radius:20px;cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:rgba(108,99,255,.15);border-color:var(--ac);color:var(--ac)}
+
+.entries{display:flex;flex-direction:column;gap:10px}
+.entry{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+.entry-left{}
+.entry-task{font-size:15px;font-weight:700;color:var(--wh);margin-bottom:4px}
+.entry-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.em-tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;background:var(--s2);color:var(--mu)}
+.entry-notes{font-size:13px;color:var(--mu);line-height:1.5}
+.entry-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.roi-badge{text-align:right}
+.roi-saved{font-size:22px;font-weight:800;color:var(--g)}
+.roi-label{font-size:11px;color:var(--mu)}
+.roi-pct{font-size:13px;font-weight:700;margin-top:2px}
+.del-entry{background:transparent;border:1px solid var(--bd);color:var(--mu);font-size:11px;padding:3px 8px;border-radius:6px;cursor:pointer;transition:all .2s}
+.del-entry:hover{border-color:var(--r);color:var(--r)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--mu);font-size:14px}
+
+/* WEEKLY CHART */
+.chart-section{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-top:28px}
+.chart-title{font-size:15px;font-weight:700;color:var(--wh);margin-bottom:16px}
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:120px;padding:0 4px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-wrap{flex:1;display:flex;align-items:flex-end;width:100%}
+.bar{width:100%;border-radius:4px 4px 0 0;background:var(--ac);min-height:2px;transition:height .4s}
+.bar-val{font-size:10px;color:var(--mu)}
+.bar-label{font-size:10px;color:var(--mu);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+
+/* BENCHMARK */
+.benchmark{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;margin-top:16px}
+.bm-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mu);margin-bottom:10px}
+.bm-row{display:flex;align-items:center;gap:10px;padding:5px 0}
+.bm-label{font-size:13px;color:var(--tx);flex:1}
+.bm-bar-wrap{width:120px;height:6px;background:var(--bd);border-radius:99px;overflow:hidden}
+.bm-bar{height:100%;background:var(--g);border-radius:99px}
+.bm-target{font-size:12px;color:var(--g);font-weight:700;white-space:nowrap}
+.your-line{font-size:12px;color:var(--y);font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="topbar-title">ROI Tracker — Time Saved with AI</div>
+</div>
+
+<div class="container">
+  <h2>ROI Tracker</h2>
+  <p class="hero-desc">Log your time saved before and after using AI for each task. This is how you prove (not guess) the value of your AI investment.</p>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <div class="sum-card"><div class="sum-num green" id="total-saved">0h 0m</div><div class="sum-label">Total Time Saved</div></div>
+    <div class="sum-card"><div class="sum-num yellow" id="weekly-saved">0h</div><div class="sum-label">Avg Saved / Week</div></div>
+    <div class="sum-card"><div class="sum-num blue" id="entries-count">0</div><div class="sum-label">Use Cases Tracked</div></div>
+    <div class="sum-card"><div class="sum-num red" id="best-roi">—</div><div class="sum-label">Best ROI Task</div></div>
+  </div>
+
+  <!-- ADD ENTRY -->
+  <div class="add-section">
+    <div class="add-title">+ Log a Use Case</div>
+    <div class="form-grid">
+      <div class="form-row form-full">
+        <div class="field-label">Task / Use Case Name</div>
+        <input type="text" id="new-task" placeholder="e.g. Writing sprint retro summary">
+      </div>
+      <div class="form-row">
+        <div class="field-label">Category</div>
+        <select id="new-cat">
+          <option value="prd">PRD & Specs</option>
+          <option value="research">Research & Analysis</option>
+          <option value="code">Code & Engineering</option>
+          <option value="writing">Writing & Comms</option>
+          <option value="meeting">Meetings & Planning</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="field-label">Week (e.g. "Week 1" or date)</div>
+        <input type="text" id="new-week" placeholder="Week 1">
+      </div>
+      <div class="form-row">
+        <div class="field-label">Time Before AI (minutes)</div>
+        <input type="number" id="before-time" placeholder="e.g. 60" min="0">
+      </div>
+      <div class="form-row">
+        <div class="field-label">Time After AI (minutes)</div>
+        <input type="number" id="after-time" placeholder="e.g. 15" min="0">
+      </div>
+      <div class="form-row form-full">
+        <div class="field-label">Notes (what worked, what didn't, prompt used)</div>
+        <textarea id="new-notes" rows="2" placeholder="e.g. Used the Sprint Retro Synthesizer prompt. Output needed minor editing. Saved ~45 min. Will use every sprint."></textarea>
+      </div>
+    </div>
+    <button class="add-btn" onclick="addEntry()">Add to Tracker</button>
+  </div>
+
+  <!-- LOG -->
+  <div class="log-header">
+    <div class="log-title">Time Savings Log</div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('prd',this)">PRD</button>
+      <button class="filter-btn" onclick="setFilter('research',this)">Research</button>
+      <button class="filter-btn" onclick="setFilter('code',this)">Code</button>
+      <button class="filter-btn" onclick="setFilter('writing',this)">Writing</button>
+      <button class="filter-btn" onclick="setFilter('meeting',this)">Meetings</button>
+    </div>
+  </div>
+  <div class="entries" id="entries-list">
+    <div class="empty-state">No entries yet. Start by logging your first AI use case above. Measure before and after — even a rough estimate counts.</div>
+  </div>
+
+  <!-- CHART -->
+  <div class="chart-section">
+    <div class="chart-title">📈 Time Saved by Week (minutes)</div>
+    <div class="chart-bars" id="chart-bars">
+      <div style="color:var(--mu);font-size:13px;align-self:center">Add entries to see your savings chart.</div>
+    </div>
+  </div>
+
+  <!-- BENCHMARKS -->
+  <div class="chart-section" style="margin-top:16px">
+    <div class="chart-title">🎯 Your Progress vs. Research Benchmarks</div>
+    <div class="benchmark">
+      <div class="bm-title">Industry benchmarks (2026 data) vs. your results</div>
+      <div class="bm-row">
+        <div class="bm-label">Document analysis / summarization</div>
+        <div class="bm-bar-wrap"><div class="bm-bar" style="width:70%"></div></div>
+        <div class="bm-target">Target: 70% saved</div>
+      </div>
+      <div class="bm-row">
+        <div class="bm-label">Research synthesis</div>
+        <div class="bm-bar-wrap"><div class="bm-bar" style="width:50%"></div></div>
+        <div class="bm-target">Target: 50% saved</div>
+      </div>
+      <div class="bm-row">
+        <div class="bm-label">Writing & content creation</div>
+        <div class="bm-bar-wrap"><div class="bm-bar" style="width:65%"></div></div>
+        <div class="bm-target">Target: 65% saved</div>
+      </div>
+      <div class="bm-row">
+        <div class="bm-label">Code review & documentation</div>
+        <div class="bm-bar-wrap"><div class="bm-bar" style="width:55%"></div></div>
+        <div class="bm-target">Target: 55% saved</div>
+      </div>
+      <div class="bm-row">
+        <div class="bm-label">Meeting notes & action items</div>
+        <div class="bm-bar-wrap"><div class="bm-bar" style="width:80%"></div></div>
+        <div class="bm-target">Target: 80% saved</div>
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:var(--mu)">
+        💡 <strong style="color:var(--tx)">Key insight:</strong> Firms running 3+ AI use cases simultaneously achieve 160% ROI vs. 40% for a single use case (Thomson Reuters, 2025). Track all your use cases here.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function sv(k,v){try{localStorage.setItem('aicourse_'+k,JSON.stringify(v))}catch(e){}}
+function ld(k,d){try{var v=localStorage.getItem('aicourse_'+k);return v!==null?JSON.parse(v):d}catch(e){return d}}
+
+var entries=ld('roi_entries',[]);
+var currentFilter='all';
+
+function addEntry(){
+  var task=document.getElementById('new-task').value.trim();
+  var before=parseInt(document.getElementById('before-time').value)||0;
+  var after=parseInt(document.getElementById('after-time').value)||0;
+  if(!task||before===0){alert('Please fill in task name and time before AI.');return}
+  var entry={id:Date.now(),task:task,cat:document.getElementById('new-cat').value,week:document.getElementById('new-week').value||'Week ?',before:before,after:after,saved:before-after,pct:before>0?Math.round((before-after)/before*100):0,notes:document.getElementById('new-notes').value,date:new Date().toLocaleDateString()};
+  entries.unshift(entry);
+  sv('roi_entries',entries);
+  // Update total saved
+  var totalMin=entries.reduce(function(s,e){return s+Math.max(0,e.saved)},0);
+  sv('total_hrs_saved',Math.round(totalMin/60*10)/10);
+  document.getElementById('new-task').value='';
+  document.getElementById('before-time').value='';
+  document.getElementById('after-time').value='';
+  document.getElementById('new-notes').value='';
+  render();
+}
+
+function deleteEntry(id){
+  entries=entries.filter(function(e){return e.id!==id});
+  sv('roi_entries',entries);
+  render();
+}
+
+function setFilter(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  render();
+}
+
+function formatTime(min){
+  if(min<60)return min+'m';
+  return Math.floor(min/60)+'h '+(min%60?min%60+'m':'');
+}
+
+function render(){
+  var filtered=entries.filter(function(e){return currentFilter==='all'||e.cat===currentFilter});
+  var list=document.getElementById('entries-list');
+  if(filtered.length===0){list.innerHTML='<div class="empty-state">No entries'+(currentFilter!=='all'?' in this category':'')+'. Log your first use case above.</div>';updateSummary();renderChart();return}
+  list.innerHTML='';
+  var catColors={prd:'var(--y)',research:'var(--g)',code:'var(--ac)',writing:'var(--r)',meeting:'#c0b8ff',other:'var(--mu)'};
+  var catLabels={prd:'PRD & Specs',research:'Research',code:'Engineering',writing:'Writing',meeting:'Meetings',other:'Other'};
+  filtered.forEach(function(e){
+    var div=document.createElement('div');
+    div.className='entry';
+    var pctColor=e.pct>=60?'var(--g)':e.pct>=30?'var(--y)':'var(--r)';
+    div.innerHTML=
+      '<div class="entry-left">'+
+      '<div class="entry-task">'+esc(e.task)+'</div>'+
+      '<div class="entry-meta">'+
+      '<span class="em-tag" style="color:'+catColors[e.cat]+'">'+catLabels[e.cat]+'</span>'+
+      '<span class="em-tag">'+esc(e.week)+'</span>'+
+      '<span class="em-tag">'+e.date+'</span>'+
+      '<span class="em-tag">Before: '+formatTime(e.before)+' → After: '+formatTime(e.after)+'</span>'+
+      '</div>'+
+      (e.notes?'<div class="entry-notes">'+esc(e.notes)+'</div>':'')+
+      '</div>'+
+      '<div class="entry-right">'+
+      '<div class="roi-badge">'+
+      '<div class="roi-saved">'+formatTime(Math.max(0,e.saved))+'</div>'+
+      '<div class="roi-label">saved per use</div>'+
+      '<div class="roi-pct" style="color:'+pctColor+'">'+e.pct+'% reduction</div>'+
+      '</div>'+
+      '<button class="del-entry" onclick="deleteEntry('+e.id+')">Remove</button>'+
+      '</div>';
+    list.appendChild(div);
+  });
+  updateSummary();
+  renderChart();
+}
+
+function updateSummary(){
+  var totalMin=entries.reduce(function(s,e){return s+Math.max(0,e.saved)},0);
+  document.getElementById('total-saved').textContent=formatTime(totalMin);
+  // Weekly avg
+  var weeks=new Set(entries.map(function(e){return e.week})).size||1;
+  document.getElementById('weekly-saved').textContent=formatTime(Math.round(totalMin/weeks));
+  document.getElementById('entries-count').textContent=entries.length;
+  // Best ROI
+  if(entries.length>0){
+    var best=entries.reduce(function(a,b){return b.pct>a.pct?b:a});
+    document.getElementById('best-roi').textContent=best.pct+'%';
+  }
+  sv('total_hrs_saved',Math.round(totalMin/60*10)/10);
+}
+
+function renderChart(){
+  // Group by week, sum savings
+  var weekMap={};
+  entries.forEach(function(e){
+    if(!weekMap[e.week])weekMap[e.week]=0;
+    weekMap[e.week]+=Math.max(0,e.saved);
+  });
+  var weeks=Object.keys(weekMap);
+  if(weeks.length===0)return;
+  var max=Math.max.apply(null,Object.values(weekMap));
+  var bars=document.getElementById('chart-bars');
+  bars.innerHTML='';
+  weeks.forEach(function(w){
+    var val=weekMap[w];
+    var pct=max>0?val/max*100:0;
+    var col=document.createElement('div');
+    col.className='bar-col';
+    col.innerHTML=
+      '<div class="bar-wrap"><div class="bar" style="height:'+pct+'%;background:var(--ac)"></div></div>'+
+      '<div class="bar-val">'+formatTime(val)+'</div>'+
+      '<div class="bar-label">'+esc(w)+'</div>';
+    bars.appendChild(col);
+  });
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+window.addEventListener('load',render);
+</script>
+</body>
+</html>

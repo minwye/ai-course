@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 1 — Foundations | AI Course</title>
+<style>
+:root{--bg:#0f1117;--s1:#1a1d2e;--s2:#222638;--bd:#2e3150;--ac:#6c63ff;--g:#00d4aa;--r:#ff6b6b;--y:#f7c948;--tx:#e8eaf6;--mu:#8b90b8;--wh:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+a{color:var(--ac)}
+.topbar{background:var(--s1);border-bottom:1px solid var(--bd);padding:14px 28px;display:flex;align-items:center;gap:16px}
+.back{color:var(--mu);font-size:13px;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px}
+.back:hover{color:var(--tx)}
+.topbar-title{font-size:16px;font-weight:700;color:var(--wh)}
+.mod-badge{background:rgba(247,201,72,.15);border:1px solid rgba(247,201,72,.3);color:var(--y);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:auto}
+.container{max-width:860px;margin:0 auto;padding:32px 24px 60px}
+h2{font-size:26px;font-weight:800;color:var(--wh);margin-bottom:8px}
+.hero-desc{color:var(--mu);font-size:15px;margin-bottom:28px}
+
+/* LESSONS */
+.lesson{background:var(--s1);border:1px solid var(--bd);border-radius:14px;margin-bottom:16px;overflow:hidden}
+.lesson-header{padding:18px 20px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.lh-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:13px}
+.lh-check.done{background:var(--g);border-color:var(--g);color:var(--bg)}
+.lh-info{flex:1}
+.lh-title{font-size:16px;font-weight:700;color:var(--wh)}
+.lh-meta{font-size:12px;color:var(--mu);margin-top:2px}
+.lh-time{font-size:12px;color:var(--y);font-weight:600;white-space:nowrap}
+.lesson-body{padding:0 20px 20px;border-top:1px solid var(--bd)}
+.lesson-body p{font-size:14px;color:var(--mu);line-height:1.7;margin:16px 0 12px}
+.resource-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.res-link{display:inline-flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--bd);color:var(--tx);font-size:12px;font-weight:600;padding:5px 12px;border-radius:8px;text-decoration:none;transition:border-color .2s}
+.res-link:hover{border-color:var(--ac);color:var(--ac)}
+
+/* EXERCISE */
+.exercise{background:rgba(0,212,170,.04);border:1px solid rgba(0,212,170,.2);border-radius:10px;padding:14px 16px;margin-top:14px}
+.ex-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--g);margin-bottom:6px}
+.ex-desc{font-size:13px;color:var(--mu);margin-bottom:10px;line-height:1.6}
+textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:inherit;font-size:13px;padding:10px 12px;resize:vertical;outline:none;transition:border-color .2s;min-height:80px}
+textarea:focus{border-color:var(--ac)}
+textarea::placeholder{color:var(--mu)}
+.save-btn{background:var(--ac);color:white;border:none;padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s}
+.save-btn:hover{opacity:.85}
+.saved-note{font-size:11px;color:var(--g);margin-left:8px;opacity:0;transition:opacity .3s}
+.mark-btn{background:transparent;border:1px solid var(--g);color:var(--g);padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:14px}
+.mark-btn:hover{background:var(--g);color:var(--bg)}
+.mark-btn.done-btn{background:rgba(0,212,170,.1)}
+
+/* AUDIT TOOL */
+#audit{margin-top:40px}
+.audit-title{font-size:20px;font-weight:800;color:var(--wh);margin-bottom:4px}
+.audit-sub{font-size:14px;color:var(--mu);margin-bottom:20px}
+.audit-intro{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;font-size:13px;color:var(--mu);line-height:1.7;margin-bottom:20px}
+.audit-intro strong{color:var(--tx)}
+.tasks-container{display:flex;flex-direction:column;gap:10px}
+.task-row{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:1fr repeat(4,70px) 60px 36px;gap:8px;align-items:center}
+.task-row.header{background:var(--s2);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mu)}
+.task-name-input{background:var(--bg);border:1px solid var(--bd);border-radius:6px;color:var(--tx);font-family:inherit;font-size:13px;padding:6px 10px;outline:none;width:100%}
+.task-name-input:focus{border-color:var(--ac)}
+.score-select{background:var(--bg);border:1px solid var(--bd);border-radius:6px;color:var(--tx);font-size:13px;padding:5px 6px;outline:none;width:100%;cursor:pointer}
+.score-select:focus{border-color:var(--ac)}
+.task-total{font-size:18px;font-weight:800;text-align:center;color:var(--g)}
+.del-btn{background:transparent;border:1px solid var(--bd);color:var(--mu);border-radius:6px;width:32px;height:32px;cursor:pointer;font-size:14px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.del-btn:hover{border-color:var(--r);color:var(--r)}
+.audit-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.add-task-btn{background:transparent;border:1px solid var(--ac);color:var(--ac);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.add-task-btn:hover{background:var(--ac);color:white}
+.calc-btn{background:var(--ac);border:none;color:white;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s}
+.calc-btn:hover{opacity:.85}
+
+/* RESULTS */
+.audit-results{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:20px;margin-top:20px;display:none}
+.ar-title{font-size:16px;font-weight:700;color:var(--wh);margin-bottom:14px}
+.result-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.result-item:last-child{border-bottom:none}
+.ri-rank{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.r1{background:rgba(247,201,72,.2);color:var(--y)} .r2{background:rgba(0,212,170,.2);color:var(--g)} .r3{background:rgba(108,99,255,.2);color:var(--ac)}
+.ri-name{flex:1;font-size:14px;font-weight:600;color:var(--wh)}
+.ri-score{font-size:20px;font-weight:800;color:var(--g)}
+.ri-score-label{font-size:11px;color:var(--mu)}
+.ri-rec{font-size:12px;color:var(--mu);margin-top:2px}
+.score-bar-wrap{height:4px;background:var(--bd);border-radius:99px;overflow:hidden;margin-top:6px;width:120px}
+.score-bar{height:100%;background:var(--g);border-radius:99px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Dashboard</a>
+  <div class="topbar-title">Module 1 — Foundations &amp; Mindset</div>
+  <div class="mod-badge">Week 1 · ~4 hrs</div>
+</div>
+
+<div class="container">
+  <h2>Foundations &amp; AI Mindset</h2>
+  <p class="hero-desc">Understand how LLMs work, master prompt engineering, and identify your highest-value AI opportunities using the Workflow Audit Tool.</p>
+
+  <!-- LESSON 1 -->
+  <div class="lesson" id="l1">
+    <div class="lesson-header" onclick="toggleLesson('l1')">
+      <div class="lh-check" id="l1-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 1 — How LLMs Actually Work</div>
+        <div class="lh-meta">Conceptual foundation · No math required</div>
+      </div>
+      <div class="lh-time">45 min</div>
+    </div>
+    <div class="lesson-body" id="l1-body" style="display:none">
+      <p>You need to understand what a large language model is — not mathematically, but conceptually. This shapes how you prompt, what you trust, and where you spot failure modes. Key concepts: tokens, context windows, the difference between training and inference, and why models "hallucinate."</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://www.youtube.com/watch?v=wjZofJX0v4M" target="_blank">▶ 3Blue1Brown — "But what is a GPT?" (26 min)</a>
+        <a class="res-link" href="https://anthropic.skilljar.com/ai-fluency-framework-foundations" target="_blank">📖 Anthropic: AI Fluency (Lessons 1–3)</a>
+        <a class="res-link" href="https://www.youtube.com/watch?v=zjkBMFhNj_g" target="_blank">▶ Andrej Karpathy — LLM intro (1 hr)</a>
+      </div>
+      <div class="exercise">
+        <div class="ex-label">✏️ Reflection Exercise</div>
+        <div class="ex-desc">After watching/reading: In your own words, explain what a context window is and why it matters for how you use AI at work. What is one thing you now understand about why AI sometimes gives wrong answers?</div>
+        <textarea id="l1-notes" placeholder="Write your reflection here..." rows="4"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l1')">Save Note</button><span class="saved-note" id="l1-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l1-mark" onclick="markDone(1)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 2 -->
+  <div class="lesson" id="l2">
+    <div class="lesson-header" onclick="toggleLesson('l2')">
+      <div class="lh-check" id="l2-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 2 — Prompt Engineering Fundamentals</div>
+        <div class="lh-meta">Highest-leverage skill · Applies immediately</div>
+      </div>
+      <div class="lh-time">60 min</div>
+    </div>
+    <div class="lesson-body" id="l2-body" style="display:none">
+      <p>The single skill that multiplies everything else. For product and engineering roles, good prompts are the difference between a usable spec and a generic one, a useful code review and a shallow one. Learn: zero-shot, few-shot, chain-of-thought, role-based prompting, and format specification.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://anthropic.skilljar.com/" target="_blank">📖 Anthropic Academy — "Claude 101"</a>
+        <a class="res-link" href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank">📖 Anthropic Prompt Engineering Docs</a>
+        <a class="res-link" href="https://learn.deeplearning.ai/courses/chatgpt-prompt-eng-for-developers" target="_blank">🎓 DeepLearning.AI Prompt Engineering (free)</a>
+      </div>
+      <div class="exercise">
+        <div class="ex-label">✏️ The Three-Prompt Challenge</div>
+        <div class="ex-desc">Pick one task you do weekly (writing a PRD section, a code review comment, a status update). Write three versions: (1) a bad prompt, (2) a decent prompt, (3) a great prompt using role + context + format. Paste your best prompt below and note what made it better.</div>
+        <textarea id="l2-notes" placeholder="Task I chose:&#10;&#10;Bad prompt: ...&#10;&#10;Great prompt: ...&#10;&#10;What made the difference: ..." rows="8"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l2')">Save Note</button><span class="saved-note" id="l2-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l2-mark" onclick="markDone(2)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- LESSON 3 — audit link -->
+  <div class="lesson" id="l3">
+    <div class="lesson-header" onclick="toggleLesson('l3')">
+      <div class="lh-check" id="l3-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 3 — Workflow Audit: Find Your Top 3 AI Opportunities</div>
+        <div class="lh-meta">Interactive scoring tool below ↓</div>
+      </div>
+      <div class="lh-time">90 min</div>
+    </div>
+    <div class="lesson-body" id="l3-body" style="display:none">
+      <p>Before touching any tool, map your actual work. Score each task you do regularly across four dimensions: frequency, time consumed, repeatability, and language-heaviness. This surfaces your real highest-ROI targets — not generic AI use cases, but <em>your</em> use cases.</p>
+      <p>For product and engineering roles, common high-scorers include: writing PRDs and specs, summarizing user research, writing release notes, reviewing architecture decisions, drafting engineering proposals, and generating test cases.</p>
+      <div class="exercise">
+        <div class="ex-label">✏️ Use the Workflow Audit Tool below</div>
+        <div class="ex-desc">Scroll down to the Workflow Audit Tool. Add your 10 most common work tasks and score them. Your top 3 results are where you'll focus Modules 2–4.</div>
+      </div>
+      <button class="mark-btn" id="l3-mark" onclick="markDone(3)">Mark as Complete (after running the audit)</button>
+    </div>
+  </div>
+
+  <!-- LESSON 4 -->
+  <div class="lesson" id="l4">
+    <div class="lesson-header" onclick="toggleLesson('l4')">
+      <div class="lh-check" id="l4-check">✓</div>
+      <div class="lh-info">
+        <div class="lh-title">Lesson 4 — Set Up Your AI Toolkit</div>
+        <div class="lh-meta">One-time setup · High payoff</div>
+      </div>
+      <div class="lh-time">30 min</div>
+    </div>
+    <div class="lesson-body" id="l4-body" style="display:none">
+      <p>Get your tools in place before you need them. For product and engineering work, you need at minimum: a Claude Pro or ChatGPT Plus subscription (essential), a meeting AI tool, and a system for saving your best prompts. Set up your <a href="prompt-library.html" target="_blank">Prompt Library</a> now.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://claude.ai" target="_blank">⚡ Claude.ai (Pro recommended)</a>
+        <a class="res-link" href="https://fathom.video" target="_blank">🎙 Fathom — Free meeting AI</a>
+        <a class="res-link" href="https://notebooklm.google.com" target="_blank">📓 Google NotebookLM (free)</a>
+        <a class="res-link" href="https://www.perplexity.ai" target="_blank">🔍 Perplexity (research)</a>
+      </div>
+      <div class="exercise">
+        <div class="ex-label">✏️ Setup Checklist</div>
+        <div class="ex-desc">Check off each item as you set it up:</div>
+        <textarea id="l4-notes" placeholder="□ Claude Pro or ChatGPT Plus — subscribed and tested&#10;□ Fathom or Otter.ai — installed and connected to calendar&#10;□ NotebookLM — created one notebook with a doc I use regularly&#10;□ Prompt Library (prompt-library.html) — opened and saved first 3 prompts&#10;□ ROI Tracker (roi-tracker.html) — opened and logged baselines for top 3 tasks" rows="8"></textarea>
+        <div><button class="save-btn" onclick="saveNote('l4')">Save Note</button><span class="saved-note" id="l4-saved">Saved ✓</span></div>
+      </div>
+      <button class="mark-btn" id="l4-mark" onclick="markDone(4)">Mark as Complete</button>
+    </div>
+  </div>
+
+  <!-- ════════ WORKFLOW AUDIT TOOL ════════ -->
+  <div id="audit">
+    <div class="audit-title">🎯 Workflow Audit Tool</div>
+    <div class="audit-sub">Find your highest-ROI AI opportunities by scoring your actual tasks</div>
+
+    <div class="audit-intro">
+      <strong>How to score (1–5 each):</strong><br>
+      <strong>Frequency</strong> — How often do you do this? (1 = rarely, 5 = daily)<br>
+      <strong>Time Cost</strong> — How long does it take manually? (1 = minutes, 5 = hours)<br>
+      <strong>Repeatability</strong> — How rule-based / repetitive is it? (1 = unique every time, 5 = very consistent)<br>
+      <strong>Language-Heavy</strong> — Is it mostly reading/writing? (1 = no, 5 = yes)<br><br>
+      <strong>Total = Frequency × Time × Repeatability × Language. Max = 625. Focus on your top 3.</strong>
+    </div>
+
+    <div class="tasks-container">
+      <div class="task-row header">
+        <span>Task Name</span>
+        <span>Freq</span>
+        <span>Time</span>
+        <span>Repeat</span>
+        <span>Lang</span>
+        <span>Score</span>
+        <span></span>
+      </div>
+      <div id="tasks-list"></div>
+    </div>
+
+    <div class="audit-actions">
+      <button class="add-task-btn" onclick="addTask()">+ Add Task</button>
+      <button class="calc-btn" onclick="calcScores()">Calculate &amp; Rank →</button>
+      <button class="save-btn" onclick="saveTasks()">Save Tasks</button>
+      <span class="saved-note" id="tasks-saved">Saved ✓</span>
+    </div>
+
+    <div class="audit-results" id="audit-results">
+      <div class="ar-title">🏆 Your Top 3 AI Opportunities</div>
+      <div id="results-list"></div>
+      <div style="margin-top:16px;padding:14px;background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);border-radius:10px;font-size:13px;color:var(--mu)">
+        💡 <strong style="color:var(--tx)">Next step:</strong> Take these 3 tasks into Module 2. For each one, build a prompt template and run the AI side-by-side with your old process. Time both. Log results in the <a href="roi-tracker.html" target="_blank" style="color:var(--ac)">ROI Tracker</a>.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function save(k,v){try{localStorage.setItem('aicourse_'+k,JSON.stringify(v))}catch(e){}}
+function load(k,d){try{var v=localStorage.getItem('aicourse_'+k);return v!==null?JSON.parse(v):d}catch(e){return d}}
+
+// ── Lesson expand/collapse ───────────────────────────────
+function toggleLesson(id){
+  var b=document.getElementById(id+'-body');
+  b.style.display=b.style.display==='none'?'block':'none';
+}
+// Auto-open first incomplete
+window.addEventListener('load',function(){
+  var done=load('m1_lessons',{});
+  var all=['l1','l2','l3','l4'];
+  var opened=false;
+  all.forEach(function(id){
+    if(done[id]){document.getElementById(id+'-check').classList.add('done');document.getElementById(id+'-mark').textContent='✓ Completed';document.getElementById(id+'-mark').classList.add('done-btn')}
+    else if(!opened){toggleLesson(id);opened=true}
+  });
+  loadNotes();
+  loadTasks();
+  updateProgress();
+});
+
+// ── Mark done ────────────────────────────────────────────
+function markDone(num){
+  var id='l'+num;
+  var done=load('m1_lessons',{});
+  done[id]=true;
+  save('m1_lessons',done);
+  document.getElementById(id+'-check').classList.add('done');
+  document.getElementById(id+'-mark').textContent='✓ Completed';
+  document.getElementById(id+'-mark').classList.add('done-btn');
+  updateProgress();
+}
+function updateProgress(){
+  var done=load('m1_lessons',{});
+  var count=Object.keys(done).length;
+  save('m1_done',count);
+}
+
+// ── Notes ───────────────────────────────────────────────
+function saveNote(id){
+  var val=document.getElementById(id+'-notes').value;
+  save('m1_note_'+id,val);
+  var s=document.getElementById(id+'-saved');
+  s.style.opacity=1;setTimeout(function(){s.style.opacity=0},2000);
+}
+function loadNotes(){
+  ['l1','l2','l3','l4'].forEach(function(id){
+    var v=load('m1_note_'+id,'');
+    if(v&&document.getElementById(id+'-notes'))document.getElementById(id+'-notes').value=v;
+  });
+}
+
+// ── Workflow Audit ───────────────────────────────────────
+var defaultTasks=[
+  {name:'Write PRDs / feature specs',f:4,t:4,r:3,l:5},
+  {name:'Summarize user research / interviews',f:3,t:4,r:3,l:5},
+  {name:'Write release notes / changelogs',f:4,t:3,r:4,l:5},
+  {name:'Draft engineering proposals / RFCs',f:2,t:5,r:2,l:5},
+  {name:'Review and respond to Slack threads',f:5,t:3,r:2,l:4},
+  {name:'Write or review test cases',f:3,t:3,r:4,l:3},
+  {name:'Competitive research / market analysis',f:2,t:5,r:2,l:5},
+  {name:'Prepare sprint planning / retro docs',f:4,t:3,r:4,l:4},
+  {name:'Write code documentation / comments',f:3,t:3,r:4,l:4},
+  {name:'Summarize meeting notes / action items',f:5,t:2,r:4,l:5},
+];
+
+var tasks=[];
+function renderTasks(){
+  var list=document.getElementById('tasks-list');
+  list.innerHTML='';
+  tasks.forEach(function(t,i){
+    var row=document.createElement('div');
+    row.className='task-row';
+    row.innerHTML=
+      '<input class="task-name-input" value="'+escHtml(t.name)+'" onchange="tasks['+i+'].name=this.value">'+
+      mkSel(i,'f',t.f)+mkSel(i,'t',t.t)+mkSel(i,'r',t.r)+mkSel(i,'l',t.l)+
+      '<div class="task-total" id="score-'+i+'">'+(t.f*t.t*t.r*t.l)+'</div>'+
+      '<button class="del-btn" onclick="delTask('+i+')">✕</button>';
+    list.appendChild(row);
+  });
+}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function mkSel(i,prop,val){
+  var opts='';
+  for(var n=1;n<=5;n++)opts+='<option value="'+n+'"'+(n==val?' selected':'')+'>'+n+'</option>';
+  return '<select class="score-select" onchange="tasks['+i+'].'+prop+'=+this.value;updateScore('+i+')">'+opts+'</select>';
+}
+function updateScore(i){
+  var t=tasks[i];
+  document.getElementById('score-'+i).textContent=t.f*t.t*t.r*t.l;
+}
+function addTask(){tasks.push({name:'New task',f:3,t:3,r:3,l:3});renderTasks()}
+function delTask(i){tasks.splice(i,1);renderTasks()}
+function saveTasks(){
+  save('m1_tasks',tasks);
+  var s=document.getElementById('tasks-saved');
+  s.style.opacity=1;setTimeout(function(){s.style.opacity=0},2000);
+}
+function loadTasks(){
+  var saved=load('m1_tasks',null);
+  tasks=saved||JSON.parse(JSON.stringify(defaultTasks));
+  renderTasks();
+}
+function calcScores(){
+  saveTasks();
+  var sorted=tasks.slice().sort(function(a,b){return(b.f*b.t*b.r*b.l)-(a.f*a.t*a.r*a.l)});
+  var top=sorted.slice(0,3);
+  var res=document.getElementById('results-list');
+  var labels=['r1','r2','r3'];
+  var nums=['1','2','3'];
+  res.innerHTML='';
+  top.forEach(function(t,i){
+    var score=t.f*t.t*t.r*t.l;
+    var pct=Math.round(score/625*100);
+    var div=document.createElement('div');
+    div.className='result-item';
+    div.innerHTML='<div class="ri-rank '+labels[i]+'">'+nums[i]+'</div>'+
+      '<div style="flex:1"><div class="ri-name">'+escHtml(t.name)+'</div>'+
+      '<div class="score-bar-wrap"><div class="score-bar" style="width:'+pct+'%"></div></div>'+
+      '<div class="ri-rec" style="margin-top:4px">Score: '+score+' / 625 · Start here in Module 2</div></div>'+
+      '<div style="text-align:right"><div class="ri-score">'+score+'</div><div class="ri-score-label">/ 625</div></div>';
+    res.appendChild(div);
+  });
+  document.getElementById('audit-results').style.display='block';
+  document.getElementById('audit-results').scrollIntoView({behavior:'smooth',block:'start'});
+  save('m1_top3',top.slice(0,3).map(function(t){return t.name}));
+}
+</script>
+</body>
+</html>
